@@ -1,4 +1,4 @@
-import { Home, SignIn, SignUp } from '../pages';
+import { Home, Login, Register } from '../pages';
 import { DefaultLayout } from '../layouts';
 export const AllRoute = [
     {
@@ -7,13 +7,13 @@ export const AllRoute = [
         layout: DefaultLayout,
     },
     {
-        path: '/signin',
-        component: SignIn,
+        path: '/Login',
+        component: Login,
         layout: '',
     },
     {
-        path: '/signup',
-        component: SignUp,
+        path: '/Register',
+        component: Register,
         layout: '',
     },
 ];
