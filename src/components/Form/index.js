@@ -1,17 +1,19 @@
 import './Form.scss';
 import Button from '../Button';
-import handleSignUp from './handleSignUp';
+import HandleSignUp from './handleSignUp';
+import HandleSignIn from './handleSignIn';
 /*Toastify*/
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 /*MDB*/
 import { MDBValidationItem, MDBInput } from 'mdb-react-ui-kit';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Form({ type }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const navigate = useNavigate();
     return (
         <div className="container-fluid">
             <div className="container">
@@ -61,18 +63,6 @@ function Form({ type }) {
                                         className="form-control-lg"
                                     />
                                 </MDBValidationItem>
-                                {/* {type === 'register' && (
-                                    <MDBValidationItem className="col-md-12 mb-4">
-                                        <MDBInput
-                                            placeholder="Ex: abc@gmail.com"
-                                            name="Re-enter password"
-                                            id="validationCustom03"
-                                            required
-                                            label="Re-enter password"
-                                            className="form-control-lg"
-                                        />
-                                    </MDBValidationItem>
-                                )} */}
                                 <div className="d-flex justify-content-between align-items-center">
                                     <div className="form-check mb-0">
                                         <input
@@ -98,7 +88,7 @@ function Form({ type }) {
                                             <Button
                                                 className="btn btn-primary btn-lg"
                                                 onClick={() => {
-                                                    handleSignUp(email, password);
+                                                    HandleSignUp(email, password, navigate);
                                                 }}
                                             >
                                                 Register
@@ -112,7 +102,12 @@ function Form({ type }) {
                                         </>
                                     ) : (
                                         <>
-                                            <Button className="btn btn-primary btn-lg" onClick={handleSignUp}>
+                                            <Button
+                                                className="btn btn-primary btn-lg"
+                                                onClick={() => {
+                                                    HandleSignIn(email, password, navigate);
+                                                }}
+                                            >
                                                 Login
                                             </Button>
                                             <div className="small fw-bold mt-2 pt-1 mb-0">

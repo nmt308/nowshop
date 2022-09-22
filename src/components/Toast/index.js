@@ -10,7 +10,7 @@ const notify = (type) => {
     toast[type](toastMsg, {
         toastId: type,
         position: 'top-right',
-        autoClose: 3000,
+        autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: false,
