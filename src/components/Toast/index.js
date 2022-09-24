@@ -1,11 +1,11 @@
 import { toast } from 'react-toastify';
 
-const notify = (type) => {
+const notify = (type, message) => {
     let toastMsg;
     if (type === 'success') {
-        toastMsg = 'Create success, redirect to Login';
+        toastMsg = message;
     } else if (type === 'error') {
-        toastMsg = 'Create fail, please try again !';
+        toastMsg = message;
     }
     toast[type](toastMsg, {
         toastId: type,

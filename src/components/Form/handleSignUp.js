@@ -10,13 +10,13 @@ const HandleSignUp = (email, password, navigate) => {
                 email,
                 password,
             });
-            notify('success');
+            notify('success', 'Create success, redirect to Login');
             setTimeout(() => {
                 navigate('/login');
             }, 3000);
         })
         .catch((error) => {
-            notify('error');
+            notify('error', 'Create fail, please try again !');
         });
 };
 export default HandleSignUp;
