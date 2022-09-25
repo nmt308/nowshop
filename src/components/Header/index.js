@@ -38,7 +38,7 @@ function Header() {
         return user;
     };
     const user = GetCurentUser();
-    console.log(login);
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container">
