@@ -1,8 +1,11 @@
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImage, MDBBtn, MDBRipple } from 'mdb-react-ui-kit';
 import { auth, fs } from '../../Config/Config';
 import { doc, setDoc } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { CartQuantity } from '../../layouts/DefaultLayout';
 export default function ProductItem({ data }) {
+    const cartData = useContext(CartQuantity);
+
     const GetCurentUID = () => {
         const [user, setUser] = useState(null);
         useEffect(() => {
@@ -37,7 +40,13 @@ export default function ProductItem({ data }) {
             <MDBCardBody>
                 <MDBCardTitle>{data.name}</MDBCardTitle>
                 <MDBCardText>{data.description}</MDBCardText>
-                <MDBBtn href="#" onClick={addToCart}>
+                <MDBBtn
+                    href="#"
+                    onClick={() => {
+                        addToCart();
+                        cartData.setCartChange(!cartData.cartChange);
+                    }}
+                >
                     Button
                 </MDBBtn>
             </MDBCardBody>

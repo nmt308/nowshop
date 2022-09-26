@@ -1,16 +1,19 @@
 import Button from '../Button';
 import Style from './Header.module.scss';
 import logo from '../../assets/image/logo.png';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { auth, fs } from '../../Config/Config';
 import { collection, getDocs } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
+import { CartQuantity } from '../../layouts/DefaultLayout';
 function Header() {
-    let login = false;
-    console.log('RUNING HEADER');
+    console.log('re render Header');
+    const cartData = useContext(CartQuantity);
+    const [cartQty, setCartQty] = useState(0);
+    const btnRef = useRef();
     const cx = classNames.bind(Style);
     const navigate = useNavigate();
     const SignOut = () => {
@@ -25,7 +28,6 @@ function Header() {
         useEffect(() => {
             auth.onAuthStateChanged(async (user) => {
                 if (user) {
-                    login = true;
                     const querySnapshot = await getDocs(collection(fs, 'users'));
                     querySnapshot.forEach((doc) => {
                         setUser(doc.data().email);
@@ -37,6 +39,17 @@ function Header() {
         }, []);
         return user;
     };
+
+    useEffect(() => {
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                console.log('running useEffect');
+                const getData = await getDocs(collection(fs, `cart-${user.uid}`));
+                setCartQty(getData.docs.length);
+            } else {
+            }
+        });
+    }, [cartData.cartChange]);
     const user = GetCurentUser();
 
     return (
@@ -72,19 +85,20 @@ function Header() {
                         <div>
                             <div className="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
                                 <Tippy content="Your cart" placement="bottom">
-                                    <button className={cx('btn')}>
+                                    <Button className={cx('btn')} to="/cart" ref={btnRef}>
                                         <i className="fa-solid fa-cart-shopping"></i>
-                                    </button>
+                                        <p>{cartQty}</p>
+                                    </Button>
                                 </Tippy>
-                                <Tippy content={user} placement="bottom">
-                                    <button className={cx('btn')}>
-                                        <i className="fa-regular fa-user"></i>
-                                    </button>
+                                <Tippy content={user} placement="bottom" ref={btnRef}>
+                                    <Button className={cx('btn')}>
+                                        <i className="fa-regular fa-user" ref={btnRef}></i>
+                                    </Button>
                                 </Tippy>
                                 <Tippy content="Log out" placement="bottom">
-                                    <button className={cx('btn')} onClick={SignOut}>
+                                    <Button className={cx('btn')} onClick={SignOut}>
                                         <i className="fa-solid fa-right-from-bracket"></i>
-                                    </button>
+                                    </Button>
                                 </Tippy>
                             </div>
                         </div>

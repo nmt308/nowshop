@@ -32,26 +32,6 @@ function Home() {
                 })}
             </div>
         </div>
-
-        // <div className="container">
-        //     <div className="row">
-        //         <div className="col-md-3">
-        //             <ProductItem />
-        //         </div>
-        //         <div className="col-md-3">
-        //             <ProductItem />
-        //         </div>
-        //         <div className="col-md-3">
-        //             <ProductItem />
-        //         </div>
-        //         <div className="col-md-3">
-        //             <ProductItem />
-        //         </div>
-        //         <div className="col-md-3">
-        //             <ProductItem />
-        //         </div>
-        //     </div>
-        // </div>
     );
 }
 
