@@ -37,7 +37,33 @@
     width: 40px;
     height: 40px;
     border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     + .btn {
         margin-left: 6px;
     }
+}
+
+.custom-btn {
+    position: relative;
+    background-color: #f0f0f0;
+    color: black;
+    &:hover {
+        color: black;
+    }
+}
+.quantity {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fa842c;
+    width: 20px;
+    height: 20px;
+    border-radius: 50px;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    color: #f3f3f3;
 }

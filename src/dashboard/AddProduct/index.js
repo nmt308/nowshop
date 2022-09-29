@@ -10,10 +10,12 @@ import { storage } from '../../Config/Config';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { addDoc, collection } from 'firebase/firestore';
 import { fs } from '../../Config/Config';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 function AddProduct() {
     const [name, setName] = useState('');
     const [priece, setPriece] = useState('');
-    const [description, setDescription] = useState('');
+    const [oldprice, setOldprice] = useState('');
     const [image, setImage] = useState(null);
 
     const type = ['image/png', 'image/jpeg', 'image/PNG', 'image/JPG', 'image/jpg'];
@@ -38,7 +40,7 @@ function AddProduct() {
                 await addDoc(collection(fs, 'products'), {
                     name,
                     priece,
-                    description,
+                    oldprice,
                     url,
                 });
                 notify('success', 'Create product success');
@@ -77,10 +79,10 @@ function AddProduct() {
 
                                 <MDBValidationItem className="col-md-12 mb-4">
                                     <MDBInput
-                                        onChange={(e) => setDescription(e.target.value)}
-                                        value={description}
-                                        placeholder="Detail about product"
-                                        label="Description"
+                                        onChange={(e) => setOldprice(e.target.value)}
+                                        value={oldprice}
+                                        placeholder="Type price"
+                                        label="Old Price"
                                         className="form-control-lg"
                                     />
                                 </MDBValidationItem>
@@ -88,6 +90,24 @@ function AddProduct() {
                                 <MDBValidationItem className="col-md-12 mb-4">
                                     <MDBFile label="Image" id="customFile" onChange={handleImage} />
                                 </MDBValidationItem>
+                                <CKEditor
+                                    editor={ClassicEditor}
+                                    data="<p>Hello from CKEditor 5!</p>"
+                                    onReady={(editor) => {
+                                        // You can store the "editor" and use when it is needed.
+                                        console.log('Editor is ready to use!', editor);
+                                    }}
+                                    onChange={(event, editor) => {
+                                        const data = editor.getData();
+                                        console.log({ event, editor, data });
+                                    }}
+                                    onBlur={(event, editor) => {
+                                        console.log('Blur.', editor);
+                                    }}
+                                    onFocus={(event, editor) => {
+                                        console.log('Focus.', editor);
+                                    }}
+                                />
                                 <div className="text-center text-lg-start mt-4 pt-2">
                                     <Button className="btn btn-primary btn-lg" onClick={handleCreate}>
                                         Create

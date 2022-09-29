@@ -1,0 +1,21 @@
+.imgProduct {
+    width: 80px;
+}
+.product-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.action-btns {
+    button {
+        outline: none;
+        border: none;
+        padding: 4px 12px;
+    }
+}
+.qty {
+    padding: 0 16px;
+}
+.itemside {
+    display: flex;
+}

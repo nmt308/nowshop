@@ -9,6 +9,7 @@ import classNames from 'classnames/bind';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { CartQuantity } from '../../layouts/DefaultLayout';
+
 function Header() {
     console.log('re render Header');
     const cartData = useContext(CartQuantity);
@@ -83,11 +84,11 @@ function Header() {
                     </div>
                     {user ? (
                         <div>
-                            <div className="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                            <div className="d-flex flex-row align-items-center justify-content-center justify-content-lg-start action">
                                 <Tippy content="Your cart" placement="bottom">
-                                    <Button className={cx('btn')} to="/cart" ref={btnRef}>
+                                    <Button className={cx('btn', 'custom-btn')} to="/cart" ref={btnRef}>
                                         <i className="fa-solid fa-cart-shopping"></i>
-                                        <p>{cartQty}</p>
+                                        <span className={cx('quantity')}>{cartQty}</span>
                                     </Button>
                                 </Tippy>
                                 <Tippy content={user} placement="bottom" ref={btnRef}>
