@@ -2,6 +2,7 @@
 import Button from '../Button';
 import Style from './Header.module.scss';
 import logo from '../../assets/image/logo.png';
+import { SearchContext } from '../../layouts/DefaultLayout';
 import { CartQuantity } from '../../layouts/DefaultLayout';
 // React
 import { useContext, useEffect, useRef, useState } from 'react';
@@ -26,7 +27,10 @@ function Header() {
 
     const cartData = useContext(CartQuantity);
     const [cartQty, setCartQty] = useState(0);
+    const [value, setValue] = useState('');
     const navigate = useNavigate();
+
+    const search = useContext(SearchContext);
 
     const SignOut = () => {
         setTimeout(() => {
@@ -116,6 +120,22 @@ function Header() {
         };
     }, [user]);
 
+    const handleValue = (e) => {
+        const value = e.target.value;
+        if (value.startsWith(' ')) {
+            return;
+        }
+        setValue(value);
+    };
+    const handleSearch = () => {
+        if (!value) {
+            return;
+        } else {
+            setValue('');
+            navigate('/search');
+            search.setSearchContext(value);
+        }
+    };
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container">
@@ -140,8 +160,8 @@ function Header() {
                         }}
                     />
                     <div className={cx('search')}>
-                        <input placeholder="Tìm kiếm sản phẩm ..." />
-                        <div className={cx('searchBtn')}>
+                        <input placeholder="Tìm kiếm sản phẩm ..." value={value} onChange={handleValue} />
+                        <div className={cx('searchBtn')} onClick={handleSearch}>
                             <i className="fa-solid fa-magnifying-glass"></i>
                         </div>
                     </div>

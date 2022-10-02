@@ -1,4 +1,4 @@
-import { Home, Login, Register, AddProduct, Cart, ProductDetail } from '../pages';
+import { Home, Login, Register, AddProduct, Cart, ProductDetail, Search } from '../pages';
 
 import { DefaultLayout } from '../layouts';
 export const AllRoute = [
@@ -25,6 +25,11 @@ export const AllRoute = [
     {
         path: '/cart',
         component: Cart,
+        layout: DefaultLayout,
+    },
+    {
+        path: '/search',
+        component: Search,
         layout: DefaultLayout,
     },
     {

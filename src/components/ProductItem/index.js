@@ -1,4 +1,3 @@
-import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImage, MDBBtn, MDBRipple } from 'mdb-react-ui-kit';
 import { auth, fs } from '../../Config/Config';
 import { doc, setDoc } from 'firebase/firestore';
 import { useContext, useEffect, useState } from 'react';

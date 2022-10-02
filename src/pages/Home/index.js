@@ -20,7 +20,7 @@ function Home() {
     useEffect(() => {
         getProducts();
     }, []);
-    console.log(product);
+
     return (
         <div className="container">
             <div className="row">
