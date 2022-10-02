@@ -4,12 +4,40 @@ import { useEffect, useState } from 'react';
 import ProductItem from '../../components/ProductItem';
 import Carousel from '../../components/Carousel';
 import './Home.scss';
+import classNames from 'classnames';
+const cx = classNames;
 function Home() {
     const [product, setProduct] = useState([]);
-
+    const [category, setCategory] = useState([]);
+    const [active, setActive] = useState('all');
+    const categories = [
+        {
+            type: 'all',
+            name: 'Tất cả',
+        },
+        {
+            type: 'phone',
+            name: 'Điện thoại',
+        },
+        {
+            type: 'laptop',
+            name: 'Laptop',
+        },
+        {
+            type: 'tablet',
+            name: 'Máy tính bảng',
+        },
+        {
+            type: 'accessory',
+            name: 'Phụ kiện điện tử',
+        },
+        {
+            type: 'smart device',
+            name: 'Thiết bị thông minh',
+        },
+    ];
     const getProducts = async () => {
         const getData = await getDocs(collection(fs, 'products'));
-        console.log(getData);
         getData.forEach((snap) => {
             const product = snap.data();
             product.ID = snap.id;
@@ -17,10 +45,27 @@ function Home() {
         });
     };
 
+    const filterProduct = (category) => {
+        setActive(category);
+        if (category === 'all') {
+            setCategory(product);
+        } else {
+            const filterData = product.filter((product) =>
+                product.category.toLowerCase().includes(category.toLowerCase()),
+            );
+            setCategory(filterData);
+        }
+    };
     useEffect(() => {
         getProducts();
     }, []);
 
+    let dataRender;
+    if (category.length > 0) {
+        dataRender = category;
+    } else {
+        dataRender = product;
+    }
     return (
         <div className="container">
             <div className="row">
@@ -47,17 +92,26 @@ function Home() {
             <div className="row">
                 <div className="col col-lg-3">
                     <ul className="list-group">
-                        <li className="list-group-item">Catalogy</li>
-                        <li className="list-group-item">All Product</li>
-                        <li className="list-group-item">SmartPhone</li>
-                        <li className="list-group-item">Laptop</li>
-                        <li className="list-group-item">SmartWatch</li>
-                        <li className="list-group-item">Other</li>
+                        {categories.map((category) => {
+                            return (
+                                <li
+                                    key={category.type}
+                                    className={cx('list-group-item', {
+                                        active: active === category.type,
+                                    })}
+                                    onClick={() => {
+                                        filterProduct(category.type);
+                                    }}
+                                >
+                                    {category.name}
+                                </li>
+                            );
+                        })}
                     </ul>
                 </div>
                 <div className="col-lg-9">
                     <div className="row">
-                        {product.map((product, index) => {
+                        {dataRender.map((product, index) => {
                             return (
                                 <div className="col col-lg-3" key={index}>
                                     <ProductItem data={product} />
