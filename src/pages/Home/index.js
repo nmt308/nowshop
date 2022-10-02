@@ -46,13 +46,13 @@ function Home() {
             </div>
             <div className="row">
                 <div className="col col-lg-3">
-                    <ul class="list-group">
-                        <li class="list-group-item">Catalogy</li>
-                        <li class="list-group-item">All Product</li>
-                        <li class="list-group-item">SmartPhone</li>
-                        <li class="list-group-item">Laptop</li>
-                        <li class="list-group-item">SmartWatch</li>
-                        <li class="list-group-item">Other</li>
+                    <ul className="list-group">
+                        <li className="list-group-item">Catalogy</li>
+                        <li className="list-group-item">All Product</li>
+                        <li className="list-group-item">SmartPhone</li>
+                        <li className="list-group-item">Laptop</li>
+                        <li className="list-group-item">SmartWatch</li>
+                        <li className="list-group-item">Other</li>
                     </ul>
                 </div>
                 <div className="col-lg-9">

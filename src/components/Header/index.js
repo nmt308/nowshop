@@ -1,22 +1,33 @@
+// local
 import Button from '../Button';
 import Style from './Header.module.scss';
 import logo from '../../assets/image/logo.png';
+import { CartQuantity } from '../../layouts/DefaultLayout';
+// React
 import { useContext, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+// Firebase
 import { auth, fs } from '../../Config/Config';
 import { collection, getDocs } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
+// Other
 import classNames from 'classnames/bind';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
-import { CartQuantity } from '../../layouts/DefaultLayout';
-
+import lottie from 'lottie-web';
+const cx = classNames.bind(Style);
 function Header() {
-    console.log('re render Header');
+    const userIcon1 = useRef();
+    const userIcon2 = useRef();
+    const cartIcon1 = useRef();
+    const cartIcon2 = useRef();
+    const logoutIcon1 = useRef();
+    const logoutIcon2 = useRef();
+    const btnRef = useRef();
+
     const cartData = useContext(CartQuantity);
     const [cartQty, setCartQty] = useState(0);
-    const btnRef = useRef();
-    const cx = classNames.bind(Style);
     const navigate = useNavigate();
+
     const SignOut = () => {
         setTimeout(() => {
             auth.signOut().then(() => {
@@ -40,18 +51,70 @@ function Header() {
         }, []);
         return user;
     };
+    const user = GetCurentUser();
 
     useEffect(() => {
         auth.onAuthStateChanged(async (user) => {
             if (user) {
-                console.log('running useEffect');
                 const getData = await getDocs(collection(fs, `cart-${user.uid}`));
                 setCartQty(getData.docs.length);
             } else {
             }
         });
     }, [cartData.cartChange]);
-    const user = GetCurentUser();
+    useEffect(() => {
+        lottie.loadAnimation({
+            name: 'user1',
+            container: userIcon1.current,
+            renderer: 'svg',
+            loop: false,
+            autoplay: false,
+            animationData: require('../../assets/icon/account.json'),
+        });
+        lottie.loadAnimation({
+            name: 'user2',
+            container: userIcon2.current,
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            animationData: require('../../assets/icon/account.json'),
+        });
+        lottie.loadAnimation({
+            name: 'cart1',
+            container: cartIcon1.current,
+            renderer: 'svg',
+            loop: false,
+            autoplay: false,
+            animationData: require('../../assets/icon/cart.json'),
+        });
+        lottie.loadAnimation({
+            name: 'cart2',
+            container: cartIcon2.current,
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            animationData: require('../../assets/icon/cart.json'),
+        });
+        lottie.loadAnimation({
+            name: 'logout1',
+            container: logoutIcon1.current,
+            renderer: 'svg',
+            loop: false,
+            autoplay: false,
+            animationData: require('../../assets/icon/logout.json'),
+        });
+        lottie.loadAnimation({
+            name: 'logout2',
+            container: logoutIcon2.current,
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            animationData: require('../../assets/icon/logout.json'),
+        });
+        return () => {
+            lottie.destroy();
+        };
+    }, [user]);
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -77,28 +140,32 @@ function Header() {
                         }}
                     />
                     <div className={cx('search')}>
-                        <input placeholder="Search trending ..." />
+                        <input placeholder="Tìm kiếm sản phẩm ..." />
                         <div className={cx('searchBtn')}>
                             <i className="fa-solid fa-magnifying-glass"></i>
                         </div>
                     </div>
+
                     {user ? (
                         <div>
                             <div className="d-flex flex-row align-items-center justify-content-center justify-content-lg-start action">
-                                <Tippy content="Your cart" placement="bottom">
+                                <Tippy content="Giỏ hàng" placement="bottom">
                                     <Button className={cx('btn', 'custom-btn')} to="/cart" ref={btnRef}>
-                                        <i className="fa-solid fa-cart-shopping"></i>
+                                        <div ref={cartIcon1} className={cx('cartIcon1')} />
+                                        <div ref={cartIcon2} className={cx('cartIcon2')} />
                                         <span className={cx('quantity')}>{cartQty}</span>
                                     </Button>
                                 </Tippy>
                                 <Tippy content={user} placement="bottom" ref={btnRef}>
                                     <Button className={cx('btn')}>
-                                        <i className="fa-regular fa-user" ref={btnRef}></i>
+                                        <div ref={userIcon1} className={cx('userIcon1')} />
+                                        <div ref={userIcon2} className={cx('userIcon2')} />
                                     </Button>
                                 </Tippy>
-                                <Tippy content="Log out" placement="bottom">
+                                <Tippy content="Đăng xuất" placement="bottom">
                                     <Button className={cx('btn')} onClick={SignOut}>
-                                        <i className="fa-solid fa-right-from-bracket"></i>
+                                        <div ref={logoutIcon1} className={cx('logoutIcon1')} />
+                                        <div ref={logoutIcon2} className={cx('logoutIcon2')} />
                                     </Button>
                                 </Tippy>
                             </div>
@@ -106,10 +173,10 @@ function Header() {
                     ) : (
                         <div className="action">
                             <Button className="btn btn-link" to="/login">
-                                Sign in
+                                Đăng nhập
                             </Button>
                             <Button className="btn btn-outline-primary" to="/register">
-                                Sign up
+                                Đăng kí
                             </Button>
                         </div>
                     )}
