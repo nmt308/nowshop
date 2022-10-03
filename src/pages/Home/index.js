@@ -5,11 +5,18 @@ import ProductItem from '../../components/ProductItem';
 import Carousel from '../../components/Carousel';
 import './Home.scss';
 import classNames from 'classnames';
+import ReactPaginate from 'react-paginate';
 const cx = classNames;
 function Home() {
+    console.log('Home');
     const [product, setProduct] = useState([]);
     const [category, setCategory] = useState([]);
     const [active, setActive] = useState('all');
+    const [currentItems, setCurrentItems] = useState([]);
+    const [pageCount, setPageCount] = useState(0);
+    const [itemOffset, setItemOffset] = useState(0);
+    const [currentPage, setCurrentPage] = useState('');
+    console.log(currentPage);
     const categories = [
         {
             type: 'all',
@@ -36,14 +43,6 @@ function Home() {
             name: 'Thiết bị thông minh',
         },
     ];
-    const getProducts = async () => {
-        const getData = await getDocs(collection(fs, 'products'));
-        getData.forEach((snap) => {
-            const product = snap.data();
-            product.ID = snap.id;
-            setProduct((products) => [...products, product]);
-        });
-    };
 
     const filterProduct = (category) => {
         setActive(category);
@@ -57,15 +56,32 @@ function Home() {
         }
     };
     useEffect(() => {
+        const getProducts = async () => {
+            const getData = await getDocs(collection(fs, 'products'));
+            getData.forEach((snap) => {
+                const product = snap.data();
+                product.ID = snap.id;
+                setProduct((products) => [...products, product]);
+            });
+        };
         getProducts();
     }, []);
-
     let dataRender;
     if (category.length > 0) {
         dataRender = category;
     } else {
         dataRender = product;
     }
+    useEffect(() => {
+        const endOffset = itemOffset + 1;
+        setCurrentItems(dataRender.slice(itemOffset, endOffset));
+        setPageCount(Math.ceil(dataRender.length / 1));
+    }, [itemOffset, dataRender]);
+    const handlePageClick = (event) => {
+        const newOffset = (event.selected * 1) % dataRender.length;
+        setItemOffset(newOffset);
+    };
+
     return (
         <div className="container">
             <div className="row">
@@ -101,6 +117,8 @@ function Home() {
                                     })}
                                     onClick={() => {
                                         filterProduct(category.type);
+                                        setItemOffset(0);
+                                        setCurrentPage(0);
                                     }}
                                 >
                                     {category.name}
@@ -111,7 +129,7 @@ function Home() {
                 </div>
                 <div className="col-lg-9">
                     <div className="row">
-                        {dataRender.map((product, index) => {
+                        {currentItems.map((product, index) => {
                             return (
                                 <div className="col col-lg-3" key={index}>
                                     <ProductItem data={product} />
@@ -119,6 +137,27 @@ function Home() {
                             );
                         })}
                     </div>
+                    <ReactPaginate
+                        forcePage={currentPage}
+                        nextLabel="next >"
+                        onPageChange={handlePageClick}
+                        pageRangeDisplayed={3}
+                        marginPagesDisplayed={2}
+                        pageCount={pageCount}
+                        previousLabel="< previous"
+                        pageClassName="page-item"
+                        pageLinkClassName="page-link"
+                        previousClassName="page-item"
+                        previousLinkClassName="page-link"
+                        nextClassName="page-item"
+                        nextLinkClassName="page-link"
+                        breakLabel="..."
+                        breakClassName="page-item"
+                        breakLinkClassName="page-link"
+                        containerClassName="pagination"
+                        activeClassName="active"
+                        renderOnZeroPageCount={null}
+                    />
                 </div>
             </div>
         </div>
