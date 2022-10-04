@@ -8,15 +8,17 @@ import classNames from 'classnames';
 import ReactPaginate from 'react-paginate';
 const cx = classNames;
 function Home() {
-    console.log('Home');
     const [product, setProduct] = useState([]);
     const [category, setCategory] = useState([]);
     const [active, setActive] = useState('all');
+
+    // Paginate items
     const [currentItems, setCurrentItems] = useState([]);
     const [pageCount, setPageCount] = useState(0);
     const [itemOffset, setItemOffset] = useState(0);
-    const [currentPage, setCurrentPage] = useState('');
-    console.log(currentPage);
+    const [currentPage, setCurrentPage] = useState({ current: '' });
+
+    // Categories list
     const categories = [
         {
             type: 'all',
@@ -44,6 +46,14 @@ function Home() {
         },
     ];
 
+    let dataRender;
+    if (category.length > 0) {
+        dataRender = category;
+    } else {
+        dataRender = product;
+    }
+
+    // Filter products
     const filterProduct = (category) => {
         setActive(category);
         if (category === 'all') {
@@ -54,7 +64,11 @@ function Home() {
             );
             setCategory(filterData);
         }
+        setCurrentPage({ current: 0 });
+        setItemOffset(0);
     };
+
+    // Get products
     useEffect(() => {
         const getProducts = async () => {
             const getData = await getDocs(collection(fs, 'products'));
@@ -66,20 +80,18 @@ function Home() {
         };
         getProducts();
     }, []);
-    let dataRender;
-    if (category.length > 0) {
-        dataRender = category;
-    } else {
-        dataRender = product;
-    }
+
+    // Handle Paginate
     useEffect(() => {
         const endOffset = itemOffset + 1;
         setCurrentItems(dataRender.slice(itemOffset, endOffset));
         setPageCount(Math.ceil(dataRender.length / 1));
     }, [itemOffset, dataRender]);
+
     const handlePageClick = (event) => {
         const newOffset = (event.selected * 1) % dataRender.length;
         setItemOffset(newOffset);
+        setCurrentPage('');
     };
 
     return (
@@ -117,8 +129,6 @@ function Home() {
                                     })}
                                     onClick={() => {
                                         filterProduct(category.type);
-                                        setItemOffset(0);
-                                        setCurrentPage(0);
                                     }}
                                 >
                                     {category.name}
@@ -138,7 +148,7 @@ function Home() {
                         })}
                     </div>
                     <ReactPaginate
-                        forcePage={currentPage}
+                        forcePage={currentPage.current}
                         nextLabel="next >"
                         onPageChange={handlePageClick}
                         pageRangeDisplayed={3}
