@@ -6,6 +6,7 @@ import Carousel from '../../components/Carousel';
 import './Home.scss';
 import classNames from 'classnames';
 import ReactPaginate from 'react-paginate';
+
 const cx = classNames;
 function Home() {
     const [product, setProduct] = useState([]);
@@ -83,20 +84,20 @@ function Home() {
 
     // Handle Paginate
     useEffect(() => {
-        const endOffset = itemOffset + 1;
+        const endOffset = itemOffset + 5;
         setCurrentItems(dataRender.slice(itemOffset, endOffset));
-        setPageCount(Math.ceil(dataRender.length / 1));
+        setPageCount(Math.ceil(dataRender.length / 5));
     }, [itemOffset, dataRender]);
 
     const handlePageClick = (event) => {
-        const newOffset = (event.selected * 1) % dataRender.length;
+        const newOffset = (event.selected * 5) % dataRender.length;
         setItemOffset(newOffset);
         setCurrentPage('');
     };
 
     return (
         <div className="container">
-            <div className="row">
+            <div className="row my-4">
                 <div className="col col-lg-9">
                     <Carousel />
                 </div>
@@ -117,8 +118,8 @@ function Home() {
                     </div>
                 </div>
             </div>
-            <div className="row">
-                <div className="col col-lg-3">
+            <div className={cx('row')}>
+                <div className="col col-lg-2">
                     <ul className="list-group">
                         {categories.map((category) => {
                             return (
@@ -137,24 +138,25 @@ function Home() {
                         })}
                     </ul>
                 </div>
-                <div className="col-lg-9">
-                    <div className="row">
+                <div className="col-lg-10">
+                    <div className={cx('row', 'row-cols-5', 'custom-row')}>
                         {currentItems.map((product, index) => {
                             return (
-                                <div className="col col-lg-3" key={index}>
+                                <div className="col" key={index}>
                                     <ProductItem data={product} />
                                 </div>
                             );
                         })}
                     </div>
                     <ReactPaginate
+                        className="pagination justify-content-center"
                         forcePage={currentPage.current}
-                        nextLabel="next >"
+                        nextLabel="Sau >"
                         onPageChange={handlePageClick}
                         pageRangeDisplayed={3}
                         marginPagesDisplayed={2}
                         pageCount={pageCount}
-                        previousLabel="< previous"
+                        previousLabel="< Trước"
                         pageClassName="page-item"
                         pageLinkClassName="page-link"
                         previousClassName="page-item"

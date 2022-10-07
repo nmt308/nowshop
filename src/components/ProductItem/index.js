@@ -6,33 +6,13 @@ import { DetailProduct } from '../../layouts/DefaultLayout';
 import Button from '../Button';
 import Style from './ProductItem.module.scss';
 import classNames from 'classnames/bind';
+import FreeShipIcon from '../../assets/icon/freeship';
+import { NumericFormat } from 'react-number-format';
 export default function ProductItem({ data }) {
     const cx = classNames.bind(Style);
-    const cartData = useContext(CartQuantity);
     const productDetail = useContext(DetailProduct);
-    const GetCurentUID = () => {
-        const [user, setUser] = useState(null);
-        useEffect(() => {
-            auth.onAuthStateChanged(async (user) => {
-                if (user) {
-                    setUser(user.uid);
-                } else {
-                    setUser(null);
-                }
-            });
-        }, []);
-        return user;
-    };
-    const uid = GetCurentUID();
-    let product = data;
+    const discount = Math.ceil(data.oldprice / data.priece);
 
-    const addToCart = async () => {
-        product['qty'] = 1;
-        product['TotalPrice'] = product.qty * data.priece;
-        await setDoc(doc(fs, `cart-${uid}`, product.ID), {
-            product,
-        });
-    };
     return (
         <div className={cx('product-item')}>
             <Button
@@ -44,18 +24,32 @@ export default function ProductItem({ data }) {
                 <div className={cx('product-img')}>
                     <img src={data.url} alt="Product" />
                 </div>
-                <div className={cx('product-name')}>{data.name}</div>
-                <div className={cx('product-price')}>{data.priece} VND</div>
+                <div className="d-flex justify-content-between mt-2">
+                    <div className={cx('product-name')}>{data.name}</div>
+                    <FreeShipIcon />
+                </div>
+                <div className={cx('price')}>
+                    <div className={cx('product-oldprice', 'text-decoration-line-through')}>
+                        <NumericFormat
+                            value={data.oldprice}
+                            displayType={'text'}
+                            thousandSeparator={true}
+                            suffix={' VNĐ'}
+                        />
+                    </div>
+                    <div className={cx('product-price')}>
+                        <NumericFormat
+                            value={data.priece}
+                            displayType={'text'}
+                            thousandSeparator={true}
+                            suffix={' VNĐ'}
+                        />
+                    </div>
+                </div>
             </Button>
-            <Button
-                className={cx('product-btn')}
-                onClick={(e) => {
-                    addToCart();
-                    cartData.setCartChange(!cartData.cartChange);
-                }}
-            >
-                Buy now
-            </Button>
+            <div className={cx('discount')}>
+                <p>Giảm {discount}%</p>
+            </div>
         </div>
     );
 }

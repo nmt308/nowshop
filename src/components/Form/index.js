@@ -2,6 +2,7 @@ import './Form.scss';
 import Button from '../Button';
 import HandleSignUp from './handleSignUp';
 import HandleSignIn from './handleSignIn';
+import LogoWeb from '../../assets/image/logoWeb.png';
 /*Toastify*/
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -21,15 +22,11 @@ function Form({ type }) {
                     <div className="container-fluid h-custom">
                         <div className="row d-flex justify-content-center align-items-center h-100">
                             <div className="col-md-9 col-lg-6 col-xl-5">
-                                <img
-                                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-                                    className="img-fluid"
-                                    alt="k"
-                                ></img>
+                                <img src={LogoWeb} className="img-fluid" alt="logo"></img>
                             </div>
                             <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
                                 <div className="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
-                                    <p className="lead fw-normal mb-0 me-3">Sign in with</p>
+                                    <p className="lead fw-normal mb-0 me-3">Đăng nhập với</p>
                                     <Button className="btn btn-primary btn-floating mx-1">
                                         <i className="fab fa-facebook-f"></i>
                                     </Button>
@@ -42,7 +39,7 @@ function Form({ type }) {
                                 </div>
 
                                 <div className="divider d-flex align-items-center my-4">
-                                    <p className="text-center fw-bold mx-3 mb-0">Or</p>
+                                    <p className="text-center fw-bold mx-3 mb-0">Hoặc</p>
                                 </div>
                                 <MDBValidationItem className="col-md-12 mb-4">
                                     <MDBInput
@@ -58,8 +55,9 @@ function Form({ type }) {
                                     <MDBInput
                                         onChange={(e) => setPassword(e.target.value)}
                                         value={password}
-                                        placeholder="Type your password"
-                                        label="Password"
+                                        placeholder="Nhập mật khẩu của bạn"
+                                        label="Mật khẩu"
+                                        type="password"
                                         className="form-control-lg"
                                     />
                                 </MDBValidationItem>
@@ -72,12 +70,12 @@ function Form({ type }) {
                                             id="form2Example3"
                                         />
                                         <label className="form-check-label" htmlFor="form2Example3">
-                                            Remember me
+                                            Ghi nhớ đăng nhập
                                         </label>
                                     </div>
                                     {type === 'login' && (
                                         <Button href="#!" className="text-body">
-                                            Forgot password?
+                                            Quên mật khẩu
                                         </Button>
                                     )}
                                 </div>
@@ -91,12 +89,12 @@ function Form({ type }) {
                                                     HandleSignUp(email, password, navigate);
                                                 }}
                                             >
-                                                Register
+                                                Đăng kí
                                             </Button>
                                             <div className="small fw-bold mt-2 pt-1 mb-0">
-                                                Already have an account ?{' '}
+                                                Đã có tài khoản ?{' '}
                                                 <Button to="/login" className="link-danger">
-                                                    Login
+                                                    Đăng nhập ngay
                                                 </Button>
                                             </div>
                                         </>
@@ -108,12 +106,12 @@ function Form({ type }) {
                                                     HandleSignIn(email, password, navigate);
                                                 }}
                                             >
-                                                Login
+                                                Đăng nhập
                                             </Button>
                                             <div className="small fw-bold mt-2 pt-1 mb-0">
-                                                Don't have an account ?{' '}
+                                                Chưa có tài khoản ?{' '}
                                                 <Button to="/register" className="link-danger">
-                                                    Register
+                                                    Đăng kí ngay
                                                 </Button>
                                             </div>
                                         </>

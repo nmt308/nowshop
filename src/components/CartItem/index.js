@@ -1,6 +1,7 @@
 import Button from '../Button';
 import Style from './CartItem.module.scss';
 import classNames from 'classnames/bind';
+import { NumericFormat } from 'react-number-format';
 function CartItem({ data, deleteProduct, increaseQty, decreaseQty }) {
     const cx = classNames.bind(Style);
     return (
@@ -30,13 +31,19 @@ function CartItem({ data, deleteProduct, increaseQty, decreaseQty }) {
             </td>
             <td>
                 <div className={cx('price-wrap')}>
-                    <var className={cx('price')}>{data.price}</var>
-                    <small className={cx('text-muted')}> {data.TotalPrice} </small>
+                    <small className={cx('text-muted')}>
+                        <NumericFormat
+                            value={data.TotalPrice}
+                            displayType={'text'}
+                            thousandSeparator={true}
+                            suffix={' VNĐ'}
+                        />{' '}
+                    </small>
                 </div>
             </td>
-            <td className={cx('text-right')}>
-                <div className="btn btn-danger btn-md cart-btn" onClick={deleteProduct}>
-                    DELETE
+            <td>
+                <div className={cx('btn btn-danger btn-md cart-btn', 'custom-btn')} onClick={deleteProduct}>
+                    XÓA
                 </div>
             </td>
         </tr>

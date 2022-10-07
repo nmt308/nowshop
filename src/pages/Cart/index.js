@@ -7,6 +7,7 @@ import Button from '../../components/Button';
 import payment from '../../assets/image/payments.png';
 import Style from './Cart.scss';
 import classNames from 'classnames/bind';
+import { NumericFormat } from 'react-number-format';
 function Cart() {
     const cx = classNames.bind(Style);
     const [carts, setCarts] = useState([]);
@@ -89,14 +90,14 @@ function Cart() {
                                 <table className={cx('table table-borderless table-shopping-cart')}>
                                     <thead className={cx('text-muted')}>
                                         <tr className={cx('small text-uppercase')}>
-                                            <th scope="col">Product</th>
+                                            <th scope="col">Sản phẩm</th>
                                             <th scope="col" width="120">
-                                                Quantity
+                                                Số lượng
+                                            </th>
+                                            <th scope="col" width="200">
+                                                Giá
                                             </th>
                                             <th scope="col" width="120">
-                                                Price
-                                            </th>
-                                            <th scope="col" className={cx('text-right')} width="200">
                                                 {' '}
                                             </th>
                                         </tr>
@@ -123,21 +124,21 @@ function Cart() {
                                 </table>
 
                                 <div className={cx('card-body border-top')}>
-                                    <Button to="/" className={cx('btn btn-light')}>
+                                    <Button to="/" className={cx('btn btn-light', 'back-btn')}>
                                         {' '}
-                                        <i className={cx('fa fa-chevron-left')}></i> Continue shopping{' '}
+                                        <i className={cx('fa fa-chevron-left')}></i> Quay lại{' '}
                                     </Button>
-                                    <Button to="/" className={cx('btn btn-primary float-md-right')}>
+                                    <Button to="/" className={cx('btn btn-primary float-md-right', 'apply-btn')}>
                                         {' '}
-                                        Make Purchase <i className={cx('fa fa-chevron-right')}></i>{' '}
+                                        Thanh toán <i className={cx('fa fa-chevron-right')}></i>{' '}
                                     </Button>
                                 </div>
                             </div>
 
                             <div className={cx('alert alert-success mt-3')}>
                                 <span className={cx('icontext')}>
-                                    <i className={cx('icon text-success fa fa-truck')}></i> Free Delivery within 1-2
-                                    weeks
+                                    <i className={cx('icon text-success fa fa-truck')}></i> Giao nhanh miễn phí trong
+                                    vòng 2-4 ngày
                                 </span>
                             </div>
                         </main>
@@ -146,16 +147,16 @@ function Cart() {
                                 <div className={cx('body')}>
                                     <form>
                                         <div className={cx('form-group')}>
-                                            <label>Have coupon?</label>
+                                            <label>Áp dụng voucher</label>
                                             <div className={cx('input-group mt-2 mb-2')}>
                                                 <input
                                                     type="text"
                                                     className={cx('form-control')}
                                                     name=""
-                                                    placeholder="Coupon code"
+                                                    placeholder="Nhập mã"
                                                 />
 
-                                                <Button className={cx('btn btn-primary')}>Apply</Button>
+                                                <Button className={cx('btn btn-primary', 'apply-btn')}>Áp dụng</Button>
                                             </div>
                                         </div>
                                     </form>
@@ -164,17 +165,31 @@ function Cart() {
                             <div className={cx('card')}>
                                 <div className={cx('body')}>
                                     <div className={cx('dlist-align')}>
-                                        <p>Total price:</p>
-                                        <h6 className={cx('text-right')}>{TotalPrice}</h6>
+                                        <p>Tổng giá:</p>
+                                        <div className={cx('text-right')}>
+                                            <NumericFormat
+                                                value={TotalPrice}
+                                                displayType={'text'}
+                                                thousandSeparator={true}
+                                                suffix={' VNĐ'}
+                                            />
+                                        </div>
                                     </div>
                                     <div className={cx('dlist-align')}>
-                                        <p>Total product:</p>
-                                        <h6 className={cx('text-right')}>{TotalProduct}</h6>
+                                        <p>Tổng sản phẩm:</p>
+                                        <div className={cx('text-right')}>{TotalProduct}</div>
                                     </div>
                                     <div className={cx('dlist-align')}>
-                                        <p>Total:</p>
-                                        <dd className={cx('text-right h5')}>
-                                            <h5>{TotalPrice}</h5>
+                                        <p>Thành tiền:</p>
+                                        <dd className={cx('text-right h6')}>
+                                            <div>
+                                                <NumericFormat
+                                                    value={TotalPrice}
+                                                    displayType={'text'}
+                                                    thousandSeparator={true}
+                                                    suffix={' VNĐ'}
+                                                />
+                                            </div>
                                         </dd>
                                     </div>
                                     <hr></hr>

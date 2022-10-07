@@ -16,3 +16,49 @@
 .container-fluid {
     position: relative;
 }
+.btn-primary {
+    background-color: var(--primary-color);
+}
+.btn:first-child:hover,
+:not(.btn-check) + .btn:hover {
+    color: var(--bs-btn-hover-color);
+    background-color: rgb(250 132 44 / 89%);
+    border-color: var(--bs-btn-hover-border-color);
+}
+.btn-primary:focus,
+.btn-primary.focus {
+    color: #fff;
+    background-color: var(--primary-color);
+}
+.btn-check:checked + .btn,
+.btn.active,
+.btn.show,
+.btn:first-child:active,
+:not(.btn-check) + .btn:active {
+    color: var(--bs-btn-active-color);
+    background-color: var(--primary-color) !important;
+    border-color: var(--bs-btn-active-border-color);
+}
+.form-check-input[type='checkbox']:checked {
+    background-image: none;
+    background-color: var(--primary-color) !important;
+}
+.form-check-input:checked {
+    border-color: var(--primary-color) !important;
+}
+.form-outline .form-control:focus ~ .form-label {
+    color: var(--primary-color);
+}
+.form-outline .form-control:focus ~ .form-notch .form-notch-leading {
+    border-color: var(--primary-color);
+    box-shadow: -1px 0 0 0 var(--primary-color), 0 1px 0 0 var(--primary-color), 0 -1px 0 0 var(--primary-color);
+}
+.form-outline .form-control:focus ~ .form-notch .form-notch-middle {
+    border-color: var(--primary-color);
+    box-shadow: 0 1px 0 0 var(--primary-color);
+    border-top: 1px solid transparent;
+}
+.form-outline .form-control:focus ~ .form-notch .form-notch-trailing {
+    border-color: var(--primary-color);
+    box-shadow: 1px 0 0 0 var(--primary-color), 0 -1px 0 0 var(--primary-color), 0 1px 0 0 var(--primary-color);
+}

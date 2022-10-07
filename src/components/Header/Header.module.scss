@@ -65,7 +65,18 @@
         }
     }
 }
-
+.btn-login {
+    color: rgba(0, 0, 0, 0.733) !important;
+    &:hover {
+        background-color: unset !important;
+    }
+}
+.btn-register,
+.btn-register:hover {
+    border-color: var(--primary-color) !important;
+    color: white !important;
+    background-color: var(--primary-color) !important;
+}
 .custom-btn {
     position: relative;
     background-color: #f0f0f0;

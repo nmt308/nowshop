@@ -192,10 +192,10 @@ function Header() {
                         </div>
                     ) : (
                         <div className="action">
-                            <Button className="btn btn-link" to="/login">
+                            <Button className={cx('btn btn-link', 'btn-login')} to="/login">
                                 Đăng nhập
                             </Button>
-                            <Button className="btn btn-outline-primary" to="/register">
+                            <Button className={cx('btn btn-outline-primary', 'btn-register')} to="/register">
                                 Đăng kí
                             </Button>
                         </div>

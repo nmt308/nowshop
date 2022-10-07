@@ -1,8 +1,22 @@
 .col {
-    margin-top: 24px;
+    // margin-top: 24px;
 }
-.list-group-item {
-    cursor: pointer;
+.custom-row {
+    --mdb-gutter-x: 12px;
+    padding: 0 0 12px 0;
+}
+.list-group {
+    border-radius: unset;
+    font-size: 14px;
+    &-item {
+        cursor: pointer;
+        transition: 0.2s ease-in-out;
+        padding: 8px 14px;
+        &.active {
+            background-color: var(--primary-color);
+            border: none;
+        }
+    }
 }
 .policy-list {
     height: 100%;
@@ -26,6 +40,7 @@
         margin-top: 18px;
     }
 }
-.list-group-item {
-    transition: 0.2s ease-in-out;
+.page-item.active .page-link {
+    background-color: var(--primary-color);
+    border: none;
 }
