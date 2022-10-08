@@ -7,13 +7,13 @@ import { notify } from '../Toast';
 const HandleSignIn = (email, password, navigate) => {
     signInWithEmailAndPassword(auth, email, password)
         .then(async (data) => {
-            notify('success', 'Login successful !');
+            notify('success', 'Đăng nhập thành công !');
             setTimeout(() => {
                 navigate('/');
             }, 3000);
         })
         .catch((error) => {
-            notify('error', 'Login failed, please try again');
+            notify('error', 'Đăng nhập thất bại !');
         });
 };
 export default HandleSignIn;

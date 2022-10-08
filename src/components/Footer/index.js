@@ -8,7 +8,7 @@ function Footer() {
     const cx = classNames.bind(Style);
     return (
         <MDBFooter bgColor="light" className="text-center text-lg-start text-muted">
-            <MDBContainer className="text-center text-md-start mt-5">
+            <MDBContainer className="text-center text-md-start mt-2">
                 <section className="d-flex justify-content-center justify-content-lg-between py-3 border-bottom">
                     <div className="me-5 d-none d-lg-block">
                         <span>Get connected with us on social networks:</span>

@@ -1,3 +1,11 @@
+.navbar {
+    top: 0;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    right: 0;
+    height: var(--navbar-height);
+}
 .logo {
     height: 46px;
 }
@@ -68,6 +76,9 @@
 .btn-login {
     color: rgba(0, 0, 0, 0.733) !important;
     &:hover {
+        background-color: unset !important;
+    }
+    &:active {
         background-color: unset !important;
     }
 }

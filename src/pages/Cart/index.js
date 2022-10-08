@@ -81,7 +81,7 @@ function Cart() {
         return total + cart.TotalPrice;
     }, 0);
     return (
-        <div className="container">
+        <div className="container page-content">
             <section className={cx('section-content padding-y')}>
                 <div className={cx('container mt-4')}>
                     <div className={cx('row')}>

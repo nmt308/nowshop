@@ -1,9 +1,18 @@
-.col {
-    // margin-top: 24px;
+.page-content {
+    margin-top: calc(var(--navbar-height) + 16px);
+    .row {
+        margin-bottom: 16px;
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
 }
 .custom-row {
     --mdb-gutter-x: 12px;
-    padding: 0 0 12px 0;
+    padding: 0;
+    .col {
+        margin-bottom: 12px;
+    }
 }
 .list-group {
     border-radius: unset;

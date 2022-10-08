@@ -23,15 +23,13 @@ function Search() {
     const searchResult = product.filter((product) =>
         product.name.toLowerCase().includes(dataSearch.searchContext.toLowerCase()),
     );
-    console.log('Search data:', searchResult);
     return (
-        <div className="container">
-            <div className="row">
-                <div className="mt-4 col-lg-2">Lọc dữ liệu</div>
+        <div className="container page-content">
+            <div className="row ">
                 <div className="col-lg-10">
-                    <div className="row">
+                    <div className="row row-cols-5 custom-row">
                         {searchResult.map((data, index) => (
-                            <div className="mt-4 col-lg-3">
+                            <div className="col">
                                 <ProductItem data={data} key={index} />
                             </div>
                         ))}

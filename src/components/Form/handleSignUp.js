@@ -10,13 +10,13 @@ const HandleSignUp = (email, password, navigate) => {
                 email,
                 password,
             });
-            notify('success', 'Create success, redirect to Login');
+            notify('success', 'Tạo tài khoản thành công !');
             setTimeout(() => {
                 navigate('/login');
             }, 3000);
         })
         .catch((error) => {
-            notify('error', 'Create fail, please try again !');
+            notify('error', 'Tạo tài khoản thất bại !');
         });
 };
 export default HandleSignUp;

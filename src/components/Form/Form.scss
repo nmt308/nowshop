@@ -36,7 +36,7 @@
 .btn:first-child:active,
 :not(.btn-check) + .btn:active {
     color: var(--bs-btn-active-color);
-    background-color: var(--primary-color) !important;
+    background-color: var(--primary-color);
     border-color: var(--bs-btn-active-border-color);
 }
 .form-check-input[type='checkbox']:checked {

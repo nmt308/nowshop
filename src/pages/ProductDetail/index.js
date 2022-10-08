@@ -47,7 +47,7 @@ function ProductDetail() {
     };
     return (
         <>
-            <section class="section-content bg-white padding-y">
+            <section class="section-content bg-white padding-y page-content">
                 <div class="container mt-4">
                     <div class="row">
                         <aside class="col-md-6">

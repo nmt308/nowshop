@@ -137,7 +137,7 @@ function Header() {
         }
     };
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className={cx('navbar navbar-expand-lg navbar-light bg-light', 'navbar')}>
             <div className="container">
                 <Button
                     className="navbar-toggler"

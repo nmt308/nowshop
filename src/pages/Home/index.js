@@ -96,8 +96,8 @@ function Home() {
     };
 
     return (
-        <div className="container">
-            <div className="row my-4">
+        <div className="container page-content">
+            <div className="row">
                 <div className="col col-lg-9">
                     <Carousel />
                 </div>
