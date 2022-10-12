@@ -1,0 +1,23 @@
+.filter {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+    input {
+        margin-right: 10px;
+    }
+    span {
+        font-size: 15px;
+    }
+    &-title {
+        font-weight: 600;
+        font-size: 15px;
+        margin-bottom: 6px;
+    }
+    &-price {
+        padding-bottom: 12px;
+        border-bottom: 1px solid #ccccccb0;
+    }
+    &-brand {
+        padding: 12px 0;
+    }
+}

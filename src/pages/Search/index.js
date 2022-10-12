@@ -3,6 +3,8 @@ import { getDocs, collection } from 'firebase/firestore';
 import { useEffect, useState, useContext } from 'react';
 import { SearchContext } from '../../layouts/DefaultLayout';
 import ProductItem from '../../components/ProductItem';
+import './Search.scss';
+import Button from '../../components/Button';
 let newBrand = [];
 function Search() {
     const dataSearch = useContext(SearchContext);
@@ -104,46 +106,83 @@ function Search() {
         setRender(sortData(dataRender));
     };
 
+    const removeFilter = () => {
+        setRender(searchResult);
+        setFilter('');
+        newBrand = [];
+    };
     return (
         <div className="container page-content">
             <div className="row ">
                 <div className="col-lg-2">
-                    <div>
-                        <input
-                            type="radio"
-                            name="filter"
-                            value="increase"
-                            onChange={(e) => {
-                                increaseHandle(dataRender);
-                            }}
-                        />
-                        Tăng dần
-                        <input
-                            type="radio"
-                            name="filter"
-                            value="decrease"
-                            onChange={(e) => {
-                                decreaseHandle(dataRender);
-                            }}
-                        />
-                        Giảm dần
+                    <div className="filter-price">
+                        <div className="filter-title">Sắp xếp giá</div>
+                        <div className="filter">
+                            <input
+                                className="form-check-input"
+                                type="radio"
+                                name="filter"
+                                checked={filter === 'increase'}
+                                value="increase"
+                                onChange={(e) => {
+                                    increaseHandle(dataRender);
+                                }}
+                            />
+                            <span>Tăng dần</span>
+                        </div>
+                        <div className="filter">
+                            <input
+                                className="form-check-input"
+                                type="radio"
+                                name="filter"
+                                checked={filter === 'decrease'}
+                                value="decrease"
+                                onChange={(e) => {
+                                    decreaseHandle(dataRender);
+                                }}
+                            />
+                            <span>Giảm dần</span>
+                        </div>
                     </div>
-                    <input
-                        type="checkbox"
-                        value="phone"
-                        onChange={(e) => {
-                            filterBrand(e.target.value);
-                        }}
-                    />
-                    Iphone
-                    <input
-                        type="checkbox"
-                        value="laptop"
-                        onChange={(e) => {
-                            filterBrand(e.target.value);
-                        }}
-                    />
-                    Laptop
+                    <div className="filter-brand">
+                        <div className="filter-title">Thương hiệu</div>
+                        <div className="filter">
+                            <input
+                                className="form-check-input"
+                                type="checkbox"
+                                checked={newBrand.includes('phone')}
+                                value="phone"
+                                onChange={(e) => {
+                                    filterBrand(e.target.value);
+                                }}
+                            />
+                            <span>Iphone</span>
+                        </div>
+
+                        <div className="filter">
+                            <input
+                                className="form-check-input"
+                                type="checkbox"
+                                checked={newBrand.includes('laptop')}
+                                value="laptop"
+                                onChange={(e) => {
+                                    filterBrand(e.target.value);
+                                }}
+                            />
+                            <span>Laptop</span>
+                        </div>
+                    </div>
+                    <div></div>
+                    <div className="filter-remove">
+                        <Button
+                            className="btn btn-primary w-100"
+                            onClick={() => {
+                                removeFilter();
+                            }}
+                        >
+                            Xóa bộ lọc
+                        </Button>
+                    </div>
                 </div>
                 <div className="col-lg-10">
                     <div className="row row-cols-5 custom-row">
