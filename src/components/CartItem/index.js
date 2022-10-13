@@ -1,4 +1,3 @@
-import Button from '../Button';
 import Style from './CartItem.module.scss';
 import classNames from 'classnames/bind';
 import { NumericFormat } from 'react-number-format';

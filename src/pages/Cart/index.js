@@ -1,5 +1,5 @@
 import { fs, auth } from '../../Config/Config';
-import { collection, getDocs, doc, deleteDoc, updateDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, deleteDoc, updateDoc, setDoc } from 'firebase/firestore';
 import { useState, useEffect, useContext } from 'react';
 import CartItem from '../../components/CartItem';
 import { CartQuantity } from '../../layouts/DefaultLayout';
@@ -8,18 +8,27 @@ import payment from '../../assets/image/payments.png';
 import Style from './Cart.scss';
 import classNames from 'classnames/bind';
 import { NumericFormat } from 'react-number-format';
+import { useNavigate } from 'react-router-dom';
+/*Toastify*/
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { notify } from '../../components/Toast';
+let AllProduct = [];
 function Cart() {
+    console.log('Cart');
     const cx = classNames.bind(Style);
     const [carts, setCarts] = useState([]);
     const [qtyChange, setQtyChange] = useState(true);
     const cartData = useContext(CartQuantity);
+    const navigate = useNavigate();
+
     useEffect(() => {
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 const getData = await getDocs(collection(fs, `cart-${user.uid}`));
                 getData.forEach((snap) => {
-                    //ID: #7 8:25
                     const cartDetail = snap.data();
+                    AllProduct.push(cartDetail.id);
                     setCarts((prev) => [...prev, cartDetail.product]);
                 });
             } else {
@@ -28,7 +37,7 @@ function Cart() {
     }, []);
 
     const deleteProduct = async (id) => {
-        cartData.setCartChange(!cartData.cartChange);
+        cartData.setCartChange(!cartData.cartChange); //re-render lại để cập nhật cart number
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 await deleteDoc(doc(fs, `cart-${user.uid}`, `${id}`));
@@ -60,6 +69,10 @@ function Cart() {
 
     const decreaseQty = async (cart, id) => {
         product = cart;
+        if (product.qty < 2) {
+            notify('error', 'Số lượng tối thiểu là 1 !');
+            return;
+        }
         product.qty = product.qty - 1;
         product.TotalPrice = product.priece * product.qty;
         auth.onAuthStateChanged(async (user) => {
@@ -72,6 +85,32 @@ function Cart() {
             }
         });
         setQtyChange(!qtyChange);
+    };
+
+    const handlePayment = (id) => {
+        if (carts.length === 0) {
+            notify('error', 'Vui lòng thêm sản phẩm !');
+            return;
+        }
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                carts.forEach(async (cart) => {
+                    await setDoc(doc(fs, `order-${user.uid}`, cart.ID), {
+                        product: cart,
+                    });
+                    console.log(cart.ID);
+                    await deleteDoc(doc(fs, `cart-${user.uid}`, `${cart.ID}`));
+                    setCarts([]);
+                });
+            } else {
+                console.log('Error deleting');
+            }
+        });
+        cartData.setCartChange(!cartData.cartChange);
+        notify('success', 'Thanh toán thành công');
+        setTimeout(() => {
+            navigate('/');
+        }, 3000);
     };
 
     const TotalProduct = carts.reduce((total, cart) => {
@@ -91,7 +130,7 @@ function Cart() {
                                     <thead className={cx('text-muted')}>
                                         <tr className={cx('small text-uppercase')}>
                                             <th scope="col">Sản phẩm</th>
-                                            <th scope="col" width="120">
+                                            <th scope="col" width="140">
                                                 Số lượng
                                             </th>
                                             <th scope="col" width="200">
@@ -128,7 +167,10 @@ function Cart() {
                                         {' '}
                                         <i className={cx('fa fa-chevron-left')}></i> Quay lại{' '}
                                     </Button>
-                                    <Button to="/" className={cx('btn btn-primary float-md-right', 'apply-btn')}>
+                                    <Button
+                                        className={cx('btn btn-primary float-md-right', 'apply-btn')}
+                                        onClick={handlePayment}
+                                    >
                                         {' '}
                                         Thanh toán <i className={cx('fa fa-chevron-right')}></i>{' '}
                                     </Button>
@@ -202,6 +244,7 @@ function Cart() {
                     </div>
                 </div>
             </section>
+            <ToastContainer />
         </div>
     );
 }
