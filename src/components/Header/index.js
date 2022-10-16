@@ -15,6 +15,7 @@ import classNames from 'classnames/bind';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import lottie from 'lottie-web';
+import Search from '../Search';
 const cx = classNames.bind(Style);
 function Header() {
     const userIcon1 = useRef();
@@ -23,6 +24,8 @@ function Header() {
     const cartIcon2 = useRef();
     const logoutIcon1 = useRef();
     const logoutIcon2 = useRef();
+    const orderIcon1 = useRef();
+    const orderIcon2 = useRef();
     const btnRef = useRef();
 
     const cartData = useContext(CartQuantity);
@@ -115,6 +118,22 @@ function Header() {
             autoplay: true,
             animationData: require('../../assets/icon/logout.json'),
         });
+        lottie.loadAnimation({
+            name: 'order1',
+            container: orderIcon1.current,
+            renderer: 'svg',
+            loop: false,
+            autoplay: false,
+            animationData: require('../../assets/icon/order.json'),
+        });
+        lottie.loadAnimation({
+            name: 'order2',
+            container: orderIcon2.current,
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            animationData: require('../../assets/icon/order.json'),
+        });
         return () => {
             lottie.destroy();
         };
@@ -159,16 +178,29 @@ function Header() {
                             navigate('/');
                         }}
                     />
-                    <div className={cx('search')}>
+                    <Search />
+                    {/* <div className={cx('search')}>
                         <input placeholder="Tìm kiếm sản phẩm ..." value={value} onChange={handleValue} />
                         <div className={cx('searchBtn')} onClick={handleSearch}>
                             <i className="fa-solid fa-magnifying-glass"></i>
                         </div>
-                    </div>
+                    </div> */}
 
                     {user ? (
                         <div>
                             <div className="d-flex flex-row align-items-center justify-content-center justify-content-lg-start action">
+                                <Tippy content={user} placement="bottom" ref={btnRef}>
+                                    <Button className={cx('btn', 'custom-btn')}>
+                                        <div ref={userIcon1} className={cx('userIcon1')} />
+                                        <div ref={userIcon2} className={cx('userIcon2')} />
+                                    </Button>
+                                </Tippy>
+                                <Tippy content="Đơn hàng" placement="bottom">
+                                    <Button className={cx('btn', 'custom-btn')} to="/order" ref={btnRef}>
+                                        <div ref={orderIcon1} className={cx('orderIcon1')} />
+                                        <div ref={orderIcon2} className={cx('orderIcon2')} />
+                                    </Button>
+                                </Tippy>
                                 <Tippy content="Giỏ hàng" placement="bottom">
                                     <Button className={cx('btn', 'custom-btn')} to="/cart" ref={btnRef}>
                                         <div ref={cartIcon1} className={cx('cartIcon1')} />
@@ -176,14 +208,9 @@ function Header() {
                                         <span className={cx('quantity')}>{cartQty}</span>
                                     </Button>
                                 </Tippy>
-                                <Tippy content={user} placement="bottom" ref={btnRef}>
-                                    <Button className={cx('btn')}>
-                                        <div ref={userIcon1} className={cx('userIcon1')} />
-                                        <div ref={userIcon2} className={cx('userIcon2')} />
-                                    </Button>
-                                </Tippy>
+
                                 <Tippy content="Đăng xuất" placement="bottom">
-                                    <Button className={cx('btn')} onClick={SignOut}>
+                                    <Button className={cx('btn', 'custom-btn')} onClick={SignOut}>
                                         <div ref={logoutIcon1} className={cx('logoutIcon1')} />
                                         <div ref={logoutIcon2} className={cx('logoutIcon2')} />
                                     </Button>

@@ -15,8 +15,10 @@ function DefaultLayout({ children }) {
         <div className={cx('wrapper')}>
             <CartQuantity.Provider value={{ cartChange, setCartChange }}>
                 <SearchContext.Provider value={{ searchContext, setSearchContext }}>
-                    <Header />
-                    <DetailProduct.Provider value={{ detail, setDetail }}>{children}</DetailProduct.Provider>
+                    <DetailProduct.Provider value={{ detail, setDetail }}>
+                        <Header />
+                        {children}
+                    </DetailProduct.Provider>
                 </SearchContext.Provider>
             </CartQuantity.Provider>{' '}
             <Footer />

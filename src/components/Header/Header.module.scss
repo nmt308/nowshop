@@ -5,44 +5,12 @@
     left: 0;
     right: 0;
     height: var(--navbar-height);
+    + div {
+        margin-top: calc(var(--navbar-height) + 16px);
+    }
 }
 .logo {
     height: 46px;
-}
-.search {
-    display: flex;
-    border: 2px solid #bdbdbd00;
-    background-color: #dadadc73;
-    border-radius: 50px;
-    width: 30%;
-    overflow: hidden;
-    transition: all 0.2s linear;
-    input {
-        width: 100%;
-        padding: 0 20px;
-        border: none;
-        outline: none;
-        background-color: transparent;
-        &:focus ~ .searchBtn {
-            color: var(--primary-color);
-        }
-    }
-    &:focus-within {
-        transition: all 0.2s linear;
-        border-color: var(--primary-color);
-    }
-}
-.searchBtn {
-    padding: 8px 20px;
-    background-color: #dadadc73;
-    &:hover {
-        cursor: pointer;
-        background-color: #dedede;
-    }
-
-    &:active {
-        background-color: #dedede;
-    }
 }
 
 .btn {
@@ -61,14 +29,16 @@
     &:hover {
         .cartIcon1,
         .userIcon1,
-        .logoutIcon1 {
+        .logoutIcon1,
+        .orderIcon1 {
             opacity: 0;
         }
     }
     &:hover {
         .cartIcon2,
         .userIcon2,
-        .logoutIcon2 {
+        .logoutIcon2,
+        .orderIcon2 {
             opacity: 1;
         }
     }
@@ -91,6 +61,7 @@
 .custom-btn {
     position: relative;
     background-color: #f0f0f0;
+    background-color: #dedede91;
     color: black;
     &:hover {
         color: black;
@@ -113,7 +84,8 @@
 
 .cartIcon1,
 .userIcon1,
-.logoutIcon1 {
+.logoutIcon1,
+.orderIcon1 {
     opacity: 1;
     transition: 0.3s ease-in;
     width: 30px;
@@ -124,7 +96,8 @@
 
 .cartIcon2,
 .userIcon2,
-.logoutIcon2 {
+.logoutIcon2,
+.orderIcon2 {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -135,4 +108,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.orderIcon1 svg,
+.orderIcon2 svg {
+    width: 90% !important;
 }

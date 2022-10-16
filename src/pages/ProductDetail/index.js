@@ -14,6 +14,7 @@ const cx = classNames.bind(Style);
 function ProductDetail() {
     const detailProduct = useContext(DetailProduct);
     let product = detailProduct.detail;
+
     const cartData = useContext(CartQuantity);
     const [qty, setQty] = useState(1);
     const increaseQty = () => {
@@ -43,11 +44,12 @@ function ProductDetail() {
             product,
         });
         cartData.setCartChange(!cartData.cartChange);
+
         notify('success', 'Thêm thành công');
     };
     return (
         <>
-            <section class="section-content bg-white padding-y page-content">
+            <div class="section-content bg-white padding-y page-content">
                 <div class="container mt-4">
                     <div class="row">
                         <aside class="col-md-6">
@@ -115,7 +117,7 @@ function ProductDetail() {
                     </div>
                 </div>
                 <ToastContainer />
-            </section>
+            </div>
         </>
     );
 }

@@ -1,5 +1,5 @@
 import { fs, auth } from '../../Config/Config';
-import { collection, getDocs, doc, deleteDoc, updateDoc, setDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, deleteDoc, updateDoc, setDoc, addDoc } from 'firebase/firestore';
 import { useState, useEffect, useContext } from 'react';
 import CartItem from '../../components/CartItem';
 import { CartQuantity } from '../../layouts/DefaultLayout';
@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { notify } from '../../components/Toast';
-let AllProduct = [];
+
 function Cart() {
     console.log('Cart');
     const cx = classNames.bind(Style);
@@ -28,7 +28,7 @@ function Cart() {
                 const getData = await getDocs(collection(fs, `cart-${user.uid}`));
                 getData.forEach((snap) => {
                     const cartDetail = snap.data();
-                    AllProduct.push(cartDetail.id);
+
                     setCarts((prev) => [...prev, cartDetail.product]);
                 });
             } else {
@@ -95,7 +95,7 @@ function Cart() {
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 carts.forEach(async (cart) => {
-                    await setDoc(doc(fs, `order-${user.uid}`, cart.ID), {
+                    await addDoc(collection(fs, `order-${user.uid}`), {
                         product: cart,
                     });
                     console.log(cart.ID);
