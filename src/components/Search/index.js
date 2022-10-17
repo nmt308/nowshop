@@ -9,7 +9,7 @@ import Style from './Search.module.scss';
 import { useDebounce } from '../../CustomHook';
 import classNames from 'classnames/bind';
 import { SearchContext } from '../../layouts/DefaultLayout';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { fs } from '../../Config/Config';
@@ -20,7 +20,6 @@ import { DetailProduct } from '../../layouts/DefaultLayout';
 const cx = classNames.bind(Style);
 function Search() {
     const navigate = useNavigate();
-    const productDetail = useContext(DetailProduct);
     const search = useContext(SearchContext);
     const [searchResult, setSearchResult] = useState([]);
     const [value, setValue] = useState('');
@@ -41,13 +40,14 @@ function Search() {
         }
         setValue(value);
     };
-    const handleSearch = () => {
+    const handleSearch = (e) => {
         if (!value) {
             return;
         } else {
             setValue('');
             navigate('/search');
-            search.setSearchContext(value);
+            localStorage.setItem('search', value);
+            // search.setSearchContext(value);
         }
     };
 
@@ -92,7 +92,7 @@ function Search() {
                                     data={item}
                                     key={index}
                                     onClick={() => {
-                                        productDetail.setDetail(item);
+                                        localStorage.setItem('productDetail', JSON.stringify(item));
                                         setValue('');
                                         setSearchResult([]);
                                     }}
@@ -123,7 +123,12 @@ function Search() {
                         setToolTip(true);
                     }}
                 />
-                <div className={cx('searchBtn')} onClick={handleSearch}>
+                <div
+                    className={cx('searchBtn')}
+                    onClick={(e) => {
+                        handleSearch(e);
+                    }}
+                >
                     <i className="fa-solid fa-magnifying-glass"></i>
                 </div>
                 {/* {value && !loading && <button className="" onClick={handleRemove}></button>} */}

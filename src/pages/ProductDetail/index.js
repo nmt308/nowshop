@@ -12,9 +12,7 @@ import { ToastContainer } from 'react-toastify';
 import { NumericFormat } from 'react-number-format';
 const cx = classNames.bind(Style);
 function ProductDetail() {
-    const detailProduct = useContext(DetailProduct);
-    let product = detailProduct.detail;
-
+    const product = JSON.parse(localStorage.getItem('productDetail'));
     const cartData = useContext(CartQuantity);
     const [qty, setQty] = useState(1);
     const increaseQty = () => {
@@ -38,9 +36,9 @@ function ProductDetail() {
     };
     const uid = GetCurentUID();
     const addToCart = async () => {
-        detailProduct.detail['qty'] = qty;
-        detailProduct.detail['TotalPrice'] = qty * detailProduct.detail.priece;
-        await setDoc(doc(fs, `cart-${uid}`, detailProduct.detail.ID), {
+        product['qty'] = qty;
+        product['TotalPrice'] = qty * product.priece;
+        await setDoc(doc(fs, `cart-${uid}`, product.ID), {
             product,
         });
         cartData.setCartChange(!cartData.cartChange);
@@ -48,77 +46,75 @@ function ProductDetail() {
         notify('success', 'Thêm thành công');
     };
     return (
-        <>
-            <div class="section-content bg-white padding-y page-content">
-                <div class="container mt-4">
-                    <div class="row">
-                        <aside class="col-md-6">
-                            <div className={cx('image')}>
-                                {' '}
-                                <img src={detailProduct.detail.url} alt="ProductImage" />
+        <div class="section-content bg-white padding-y page-content">
+            <div class="container mt-4">
+                <div class="row">
+                    <aside class="col-md-6">
+                        <div className={cx('image')}>
+                            {' '}
+                            <img src={product.url} alt="ProductImage" />
+                        </div>
+                    </aside>
+                    <main class="col-md-6">
+                        <article class="product-info-aside">
+                            <h2 className={cx('title', 'mt-3')}>{product.name}</h2>
+
+                            <div class="mb-3">
+                                <h4 class="">
+                                    <NumericFormat
+                                        value={product.priece}
+                                        displayType={'text'}
+                                        thousandSeparator={true}
+                                        suffix={' VNĐ'}
+                                    />
+                                </h4>
+                                <span class="text-decoration-line-through">
+                                    <NumericFormat
+                                        value={product.oldprice}
+                                        displayType={'text'}
+                                        thousandSeparator={true}
+                                        suffix={' VNĐ'}
+                                    />
+                                </span>
                             </div>
-                        </aside>
-                        <main class="col-md-6">
-                            <article class="product-info-aside">
-                                <h2 className={cx('title', 'mt-3')}>{detailProduct.detail.name}</h2>
 
-                                <div class="mb-3">
-                                    <h4 class="">
-                                        <NumericFormat
-                                            value={detailProduct.detail.priece}
-                                            displayType={'text'}
-                                            thousandSeparator={true}
-                                            suffix={' VNĐ'}
-                                        />
-                                    </h4>
-                                    <span class="text-decoration-line-through">
-                                        <NumericFormat
-                                            value={detailProduct.detail.oldprice}
-                                            displayType={'text'}
-                                            thousandSeparator={true}
-                                            suffix={' VNĐ'}
-                                        />
-                                    </span>
-                                </div>
+                            <p>{product.description}</p>
 
-                                <p>{detailProduct.detail.description}</p>
+                            <dl class="row">
+                                <dt class="col-sm-3">Hãng sản xuất</dt>
+                                <dd class="col-sm-9">Apple</dd>
 
-                                <dl class="row">
-                                    <dt class="col-sm-3">Hãng sản xuất</dt>
-                                    <dd class="col-sm-9">Apple</dd>
+                                <dt class="col-sm-3">Bảo hành</dt>
+                                <dd class="col-sm-9">2 năm</dd>
 
-                                    <dt class="col-sm-3">Bảo hành</dt>
-                                    <dd class="col-sm-9">2 năm</dd>
+                                <dt class="col-sm-3">Giao hàng</dt>
+                                <dd class="col-sm-9">2-4 ngày</dd>
 
-                                    <dt class="col-sm-3">Giao hàng</dt>
-                                    <dd class="col-sm-9">2-4 ngày</dd>
+                                <dt class="col-sm-3">Tình trạng</dt>
+                                <dd class="col-sm-9">Còn hàng</dd>
+                            </dl>
 
-                                    <dt class="col-sm-3">Tình trạng</dt>
-                                    <dd class="col-sm-9">Còn hàng</dd>
-                                </dl>
-
-                                <div class="d-flex mt-4">
-                                    <div className={cx('product-text', 'quantity-box')}>
-                                        <div className={cx('action-btns', 'minus')} onClick={decreaseQty}>
-                                            <button>-</button>
-                                        </div>
-                                        <div className={cx('qty')}>{qty}</div>
-                                        <div className={cx('action-btns', 'plus')} onClick={increaseQty}>
-                                            <button>+</button>
-                                        </div>
+                            <div class="d-flex mt-4">
+                                <div className={cx('product-text', 'quantity-box')}>
+                                    <div className={cx('action-btns', 'minus')} onClick={decreaseQty}>
+                                        <button>-</button>
                                     </div>
-
-                                    <Button className={cx('btn btn-primary', 'custom-btn')} onClick={addToCart}>
-                                        <i class="fas fa-shopping-cart"></i> <span class="text">Thêm giỏ hàng</span>
-                                    </Button>
+                                    <div className={cx('qty')}>{qty}</div>
+                                    <div className={cx('action-btns', 'plus')} onClick={increaseQty}>
+                                        <button>+</button>
+                                    </div>
                                 </div>
-                            </article>
-                        </main>
-                    </div>
+
+                                <Button className={cx('btn btn-primary', 'custom-btn')} onClick={addToCart}>
+                                    <i class="fas fa-shopping-cart"></i> <span class="text">Thêm giỏ hàng</span>
+                                </Button>
+                            </div>
+                        </article>
+                    </main>
                 </div>
-                <ToastContainer />
             </div>
-        </>
+            <ToastContainer />
+        </div>
     );
 }
 

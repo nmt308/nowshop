@@ -19,6 +19,7 @@ export default function ProductItem({ data }) {
                 to={`/${data.name}-detail`}
                 onClick={() => {
                     productDetail.setDetail(data);
+                    localStorage.setItem('productDetail', JSON.stringify(data));
                 }}
             >
                 <div className={cx('product-img')}>

@@ -5,13 +5,15 @@ import { SearchContext } from '../../layouts/DefaultLayout';
 import ProductItem from '../../components/ProductItem';
 import './Search.scss';
 import Button from '../../components/Button';
-let newBrand = [];
+import { useRef } from 'react';
+
 function Search() {
-    const dataSearch = useContext(SearchContext);
+    // const dataSearch = useContext(SearchContext);
+    const dataSearch = localStorage.getItem('search');
     const [product, setProduct] = useState([]);
     const [render, setRender] = useState('');
     const [filter, setFilter] = useState('');
-
+    let newBrand = useRef([]);
     const getProducts = async () => {
         const getData = await getDocs(collection(fs, 'products'));
         getData.forEach((snap) => {
@@ -25,9 +27,7 @@ function Search() {
         getProducts();
     }, []);
 
-    let searchResult = product.filter((product) =>
-        product.name.toLowerCase().includes(dataSearch.searchContext.toLowerCase()),
-    );
+    let searchResult = product.filter((product) => product.name.toLowerCase().includes(dataSearch.toLowerCase()));
 
     let dataRender = searchResult;
     let newFilters = [];
@@ -37,20 +37,20 @@ function Search() {
     }
 
     const filterBrand = (data) => {
-        if (newBrand.includes(data)) {
-            if (newBrand.length > 1) {
+        if (newBrand.current.includes(data)) {
+            if (newBrand.current.length > 1) {
                 //Phải lớn hơn 1 nếu không khi mảng có 1 phần tử uncheck sẽ còn phần tử đó
-                newBrand = newBrand.filter((x) => {
+                newBrand.current = newBrand.current.filter((x) => {
                     return x !== data;
                 });
-            } else if (newBrand.length === 1) {
-                newBrand = [];
+            } else if (newBrand.current.length === 1) {
+                newBrand.current = [];
             }
         } else {
-            newBrand.push(data);
+            newBrand.current.push(data);
         }
-        if (newBrand.length > 0) {
-            newBrand.forEach((category) => {
+        if (newBrand.current.length > 0) {
+            newBrand.current.forEach((category) => {
                 searchResult.forEach((data) => {
                     if (data.category.includes(category)) {
                         newFilters.push(data);
@@ -109,7 +109,7 @@ function Search() {
     const removeFilter = () => {
         setRender(searchResult);
         setFilter('');
-        newBrand = [];
+        newBrand.current = [];
     };
     return (
         <div className="container page-content">
@@ -150,7 +150,7 @@ function Search() {
                             <input
                                 className="form-check-input"
                                 type="checkbox"
-                                checked={newBrand.includes('phone')}
+                                checked={newBrand.current.includes('phone')}
                                 value="phone"
                                 onChange={(e) => {
                                     filterBrand(e.target.value);
@@ -163,7 +163,7 @@ function Search() {
                             <input
                                 className="form-check-input"
                                 type="checkbox"
-                                checked={newBrand.includes('laptop')}
+                                checked={newBrand.current.includes('laptop')}
                                 value="laptop"
                                 onChange={(e) => {
                                     filterBrand(e.target.value);
