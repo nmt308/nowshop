@@ -30,35 +30,31 @@ function Header() {
 
     const cartData = useContext(CartQuantity);
     const [cartQty, setCartQty] = useState(0);
-    const [value, setValue] = useState('');
+
     const navigate = useNavigate();
 
-    const search = useContext(SearchContext);
-
     const SignOut = () => {
+        localStorage.removeItem('user');
         setTimeout(() => {
             auth.signOut().then(() => {
                 navigate('/');
             });
         }, 500);
     };
-    const GetCurentUser = () => {
-        const [user, setUser] = useState(null);
-        useEffect(() => {
-            auth.onAuthStateChanged(async (user) => {
-                if (user) {
-                    const querySnapshot = await getDocs(collection(fs, 'users'));
-                    querySnapshot.forEach((doc) => {
-                        setUser(doc.data().email);
-                    });
-                } else {
-                    setUser(null);
-                }
-            });
-        }, []);
-        return user;
-    };
-    const user = GetCurentUser();
+
+    useEffect(() => {
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                const querySnapshot = await getDocs(collection(fs, 'users'));
+                querySnapshot.forEach((doc) => {
+                    localStorage.setItem('user', doc.data().email);
+                });
+            } else {
+            }
+        });
+    }, []);
+
+    const user = localStorage.getItem('user');
 
     useEffect(() => {
         auth.onAuthStateChanged(async (user) => {
@@ -137,24 +133,8 @@ function Header() {
         return () => {
             lottie.destroy();
         };
-    }, [user]);
+    }, []);
 
-    const handleValue = (e) => {
-        const value = e.target.value;
-        if (value.startsWith(' ')) {
-            return;
-        }
-        setValue(value);
-    };
-    const handleSearch = () => {
-        if (!value) {
-            return;
-        } else {
-            setValue('');
-            navigate('/search');
-            search.setSearchContext(value);
-        }
-    };
     return (
         <nav className={cx('navbar navbar-expand-lg navbar-light bg-light', 'navbar')}>
             <div className="container">
@@ -179,12 +159,6 @@ function Header() {
                         }}
                     />
                     <Search />
-                    {/* <div className={cx('search')}>
-                        <input placeholder="Tìm kiếm sản phẩm ..." value={value} onChange={handleValue} />
-                        <div className={cx('searchBtn')} onClick={handleSearch}>
-                            <i className="fa-solid fa-magnifying-glass"></i>
-                        </div>
-                    </div> */}
 
                     {user ? (
                         <div>
