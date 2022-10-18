@@ -2,7 +2,7 @@
 import Button from '../Button';
 import Style from './Header.module.scss';
 import logo from '../../assets/image/logo.png';
-import { SearchContext } from '../../layouts/DefaultLayout';
+import Search from '../Search';
 import { CartQuantity } from '../../layouts/DefaultLayout';
 // React
 import { useContext, useEffect, useRef, useState } from 'react';
@@ -15,7 +15,7 @@ import classNames from 'classnames/bind';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import lottie from 'lottie-web';
-import Search from '../Search';
+
 const cx = classNames.bind(Style);
 function Header() {
     const userIcon1 = useRef();
@@ -65,6 +65,7 @@ function Header() {
             }
         });
     }, [cartData.cartChange]);
+
     useEffect(() => {
         lottie.loadAnimation({
             name: 'user1',
@@ -149,7 +150,7 @@ function Header() {
                 >
                     <span className="navbar-toggler-icon"></span>
                 </Button>
-                <div className=" navbar-collapse justify-content-between" id="navbarTogglerDemo01">
+                <div className="navbar-collapse justify-content-between" id="navbarTogglerDemo01">
                     <img
                         src={logo}
                         alt="logo"

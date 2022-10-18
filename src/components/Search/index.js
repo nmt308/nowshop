@@ -1,33 +1,26 @@
-// import { wrapper as PopperWrapper } from '../../../../components/Popper';
-import { useEffect, useRef, useState } from 'react';
-import HeadlessTippy from '@tippyjs/react/headless';
-// import AccountItem from '../../../../components/AccountItem';
-// import axios from 'axios';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faSearch, faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
+//Local
 import Style from './Search.module.scss';
-import { useDebounce } from '../../CustomHook';
-import classNames from 'classnames/bind';
-import { SearchContext } from '../../layouts/DefaultLayout';
-import { Link, useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
-import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
-import { fs } from '../../Config/Config';
 import SearchItem from '../SearchItem';
-
-import { DetailProduct } from '../../layouts/DefaultLayout';
+import { useDebounce } from '../../CustomHook';
+//React
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+//Firebase
+import { collection, getDocs } from 'firebase/firestore';
+import { fs } from '../../Config/Config';
+//Other
+import HeadlessTippy from '@tippyjs/react/headless';
+import classNames from 'classnames/bind';
 
 const cx = classNames.bind(Style);
 function Search() {
-    const navigate = useNavigate();
-    const search = useContext(SearchContext);
     const [searchResult, setSearchResult] = useState([]);
     const [value, setValue] = useState('');
     const [hideToolTip, setToolTip] = useState(true);
     const [loading, setLoading] = useState(false);
 
     const inputRef = useRef();
-
+    const navigate = useNavigate();
     const debounce = useDebounce(value, 500);
 
     const handleTooltip = () => {
@@ -40,14 +33,13 @@ function Search() {
         }
         setValue(value);
     };
-    const handleSearch = (e) => {
+    const handleSearch = () => {
         if (!value) {
             return;
         } else {
             setValue('');
             navigate('/search');
             localStorage.setItem('search', value);
-            // search.setSearchContext(value);
         }
     };
 
@@ -131,8 +123,6 @@ function Search() {
                 >
                     <i className="fa-solid fa-magnifying-glass"></i>
                 </div>
-                {/* {value && !loading && <button className="" onClick={handleRemove}></button>} */}
-                {/* {loading && <i className="fa-solid fa-spinner"></i>} */}
             </div>
         </HeadlessTippy>
     );

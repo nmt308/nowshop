@@ -1,52 +1,56 @@
-.product-img {
-    text-align: center;
-    img {
-        width: 85%;
+.product {
+    &-item {
+        box-shadow: 0 1px 2px 0 rgb(60 64 67 / 10%), 0 2px 6px 2px rgb(60 64 67 / 15%);
+        padding: 12px;
+        padding-top: 24px;
+        position: relative;
+        p {
+            margin-top: 16px;
+            margin-bottom: 0;
+        }
+        a {
+            color: unset;
+        }
     }
-}
-.product-name {
-    font-weight: 600;
-    height: 65px;
-}
-.product-btn {
-    padding: 6px 12px;
-    border: none;
-    position: absolute;
-    right: 0px;
-    bottom: 12px;
-    background-color: unset;
-    img {
-        width: 32px;
+    &-img {
+        text-align: center;
+        img {
+            width: 85%;
+        }
     }
-}
-.product-price {
-    margin: 4px 0px;
-    font-size: 15px;
-    color: #e2041ee6;
-    font-weight: 600;
-    margin-right: 10px;
-}
-.product-item {
-    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 10%), 0 2px 6px 2px rgb(60 64 67 / 15%);
-    padding: 12px;
-    padding-top: 24px;
-    position: relative;
-    p {
-        margin-top: 16px;
-        margin-bottom: 0;
+    &-title {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 8px;
     }
-    a {
-        color: unset;
+    &-name {
+        font-weight: 600;
+        height: 65px;
     }
-}
-.product-oldprice {
-    font-size: 13px;
-    color: #707070;
-    font-weight: 600;
-}
-.price {
-    // display: flex;
-    // align-items: center;
+    &-btn {
+        padding: 6px 12px;
+        border: none;
+        position: absolute;
+        right: 0px;
+        bottom: 12px;
+        background-color: unset;
+        img {
+            width: 32px;
+        }
+    }
+    &-price {
+        margin: 4px 0px;
+        font-size: 15px;
+        color: #e2041ee6;
+        font-weight: 600;
+        margin-right: 10px;
+    }
+    &-oldprice {
+        font-size: 13px;
+        color: #707070;
+        font-weight: 600;
+        text-decoration: line-through;
+    }
 }
 .discount {
     width: 80px;

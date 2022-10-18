@@ -9,7 +9,7 @@ function SearchItem({ data, onClick }) {
                 <h4 className={Style.name}>
                     <span>{data.name}</span>
                 </h4>
-                <span className={Style.username}>
+                <span className={Style.price}>
                     <NumericFormat value={data.priece} displayType={'text'} thousandSeparator={true} suffix={' VNĐ'} />
                 </span>
             </div>

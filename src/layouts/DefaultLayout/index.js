@@ -5,23 +5,16 @@ import Footer from '../../components/Footer';
 import { createContext, useState } from 'react';
 
 export const CartQuantity = createContext();
-export const DetailProduct = createContext();
-export const SearchContext = createContext();
+
 const cx = classNames.bind(Style);
 function DefaultLayout({ children }) {
     const [cartChange, setCartChange] = useState(true);
-    const [detail, setDetail] = useState('');
-    const [searchContext, setSearchContext] = useState('');
 
     return (
         <div className={cx('wrapper')}>
             <CartQuantity.Provider value={{ cartChange, setCartChange }}>
-                <SearchContext.Provider value={{ searchContext, setSearchContext }}>
-                    <DetailProduct.Provider value={{ detail, setDetail }}>
-                        <Header />
-                        {children}
-                    </DetailProduct.Provider>
-                </SearchContext.Provider>
+                <Header />
+                {children}
             </CartQuantity.Provider>{' '}
             <Footer />
         </div>

@@ -1,22 +1,26 @@
-import { fs, auth } from '../../Config/Config';
-import { collection, getDocs, doc, deleteDoc, updateDoc, setDoc, addDoc } from 'firebase/firestore';
-import { useState, useEffect, useContext } from 'react';
+//Local
 import CartItem from '../../components/CartItem';
 import { CartQuantity } from '../../layouts/DefaultLayout';
 import Button from '../../components/Button';
 import payment from '../../assets/image/payments.png';
+import empty from '../../assets/icon/emptyorder.jpg';
 import Style from './Cart.scss';
-import classNames from 'classnames/bind';
-import { NumericFormat } from 'react-number-format';
+//Firebase
+import { fs, auth } from '../../Config/Config';
+import { collection, getDocs, doc, deleteDoc, updateDoc, addDoc } from 'firebase/firestore';
+//React
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-/*Toastify*/
+//Toastify
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { notify } from '../../components/Toast';
+//Other
+import classNames from 'classnames/bind';
+import { NumericFormat } from 'react-number-format';
 
+const cx = classNames.bind(Style);
 function Cart() {
-    console.log('Cart');
-    const cx = classNames.bind(Style);
     const [carts, setCarts] = useState([]);
     const [qtyChange, setQtyChange] = useState(true);
     const cartData = useContext(CartQuantity);
@@ -28,10 +32,10 @@ function Cart() {
                 const getData = await getDocs(collection(fs, `cart-${user.uid}`));
                 getData.forEach((snap) => {
                     const cartDetail = snap.data();
-
                     setCarts((prev) => [...prev, cartDetail.product]);
                 });
             } else {
+                alert('Something went wrong. Please try again');
             }
         });
     }, []);
@@ -119,6 +123,7 @@ function Cart() {
     const TotalPrice = carts.reduce((total, cart) => {
         return total + cart.TotalPrice;
     }, 0);
+
     return (
         <div className="container page-content">
             <section className={cx('section-content padding-y')}>
@@ -126,55 +131,64 @@ function Cart() {
                     <div className={cx('row')}>
                         <main className={cx('col-md-9')}>
                             <div className={cx('card')}>
-                                <table className={cx('table table-borderless table-shopping-cart')}>
-                                    <thead className={cx('text-muted')}>
-                                        <tr className={cx('small text-uppercase')}>
-                                            <th scope="col">Sản phẩm</th>
-                                            <th scope="col" width="140">
-                                                Số lượng
-                                            </th>
-                                            <th scope="col" width="200">
-                                                Giá
-                                            </th>
-                                            <th scope="col" width="120">
+                                {carts.length > 0 ? (
+                                    <>
+                                        {' '}
+                                        <table className={cx('table table-borderless table-shopping-cart')}>
+                                            <thead className={cx('text-muted')}>
+                                                <tr className={cx('small text-uppercase')}>
+                                                    <th scope="col">Sản phẩm</th>
+                                                    <th scope="col" width="140">
+                                                        Số lượng
+                                                    </th>
+                                                    <th scope="col" width="200">
+                                                        Giá
+                                                    </th>
+                                                    <th scope="col" width="120">
+                                                        {' '}
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {carts.map((cart, index) => {
+                                                    return (
+                                                        <CartItem
+                                                            data={cart}
+                                                            key={index}
+                                                            deleteProduct={() => {
+                                                                deleteProduct(cart.ID);
+                                                            }}
+                                                            increaseQty={() => {
+                                                                increaseQty(cart, cart.ID);
+                                                            }}
+                                                            decreaseQty={() => {
+                                                                decreaseQty(cart, cart.ID);
+                                                            }}
+                                                        />
+                                                    );
+                                                })}
+                                            </tbody>
+                                        </table>
+                                        <div className={cx('card-body border-top')}>
+                                            <Button to="/" className={cx('btn btn-light', 'back-btn')}>
                                                 {' '}
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {carts.map((cart, index) => {
-                                            return (
-                                                <CartItem
-                                                    data={cart}
-                                                    key={index}
-                                                    deleteProduct={() => {
-                                                        deleteProduct(cart.ID);
-                                                    }}
-                                                    increaseQty={() => {
-                                                        increaseQty(cart, cart.ID);
-                                                    }}
-                                                    decreaseQty={() => {
-                                                        decreaseQty(cart, cart.ID);
-                                                    }}
-                                                />
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
-
-                                <div className={cx('card-body border-top')}>
-                                    <Button to="/" className={cx('btn btn-light', 'back-btn')}>
-                                        {' '}
-                                        <i className={cx('fa fa-chevron-left')}></i> Quay lại{' '}
-                                    </Button>
-                                    <Button
-                                        className={cx('btn btn-primary float-md-right', 'apply-btn')}
-                                        onClick={handlePayment}
-                                    >
-                                        {' '}
-                                        Thanh toán <i className={cx('fa fa-chevron-right')}></i>{' '}
-                                    </Button>
-                                </div>
+                                                <i className={cx('fa fa-chevron-left')}></i> Quay lại{' '}
+                                            </Button>
+                                            <Button
+                                                className={cx('btn btn-primary float-md-right', 'apply-btn')}
+                                                onClick={handlePayment}
+                                            >
+                                                {' '}
+                                                Thanh toán <i className={cx('fa fa-chevron-right')}></i>{' '}
+                                            </Button>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className={cx('empty-cart')}>
+                                        <img src={empty} alt="empty" />
+                                        <h5>Giỏ hàng đang trống</h5>
+                                    </div>
+                                )}
                             </div>
 
                             <div className={cx('alert alert-success mt-3')}>
@@ -187,21 +201,26 @@ function Cart() {
                         <aside className={cx('col-md-3')}>
                             <div className={cx('card mb-3')}>
                                 <div className={cx('body')}>
-                                    <form>
-                                        <div className={cx('form-group')}>
-                                            <label>Áp dụng voucher</label>
-                                            <div className={cx('input-group mt-2 mb-2')}>
-                                                <input
-                                                    type="text"
-                                                    className={cx('form-control')}
-                                                    name=""
-                                                    placeholder="Nhập mã"
-                                                />
+                                    <div className={cx('form-group')}>
+                                        <label>Áp dụng voucher</label>
+                                        <div className={cx('input-group mt-2 mb-2')}>
+                                            <input
+                                                type="text"
+                                                className={cx('form-control')}
+                                                name=""
+                                                placeholder="Nhập mã"
+                                            />
 
-                                                <Button className={cx('btn btn-primary', 'apply-btn')}>Áp dụng</Button>
-                                            </div>
+                                            <Button
+                                                className={cx('btn btn-primary', 'apply-btn')}
+                                                onClick={() => {
+                                                    notify('error', 'Mã không khả dụng !');
+                                                }}
+                                            >
+                                                Áp dụng
+                                            </Button>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                             <div className={cx('card')}>

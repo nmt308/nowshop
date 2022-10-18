@@ -1,19 +1,22 @@
-import { fs } from '../../Config/Config';
-import { getDocs, collection } from 'firebase/firestore';
-import { useEffect, useState, useContext } from 'react';
-import { SearchContext } from '../../layouts/DefaultLayout';
+//Local
 import ProductItem from '../../components/ProductItem';
 import './Search.scss';
 import Button from '../../components/Button';
+import { fs } from '../../Config/Config';
+//Firebase
+import { getDocs, collection } from 'firebase/firestore';
+//React
+import { useEffect, useState } from 'react';
 import { useRef } from 'react';
 
 function Search() {
-    // const dataSearch = useContext(SearchContext);
     const dataSearch = localStorage.getItem('search');
     const [product, setProduct] = useState([]);
     const [render, setRender] = useState('');
     const [filter, setFilter] = useState('');
+
     let newBrand = useRef([]);
+
     const getProducts = async () => {
         const getData = await getDocs(collection(fs, 'products'));
         getData.forEach((snap) => {
@@ -113,7 +116,7 @@ function Search() {
     };
     return (
         <div className="container page-content">
-            <div className="row ">
+            <div className="row">
                 <div className="col-lg-2">
                     <div className="filter-price">
                         <div className="filter-title">Sắp xếp giá</div>

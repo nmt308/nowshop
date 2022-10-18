@@ -1,9 +1,12 @@
-import { fs } from '../../Config/Config';
-import { collection, getDocs } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+//Local
 import ProductItem from '../../components/ProductItem';
 import Carousel from '../../components/Carousel';
 import './Home.scss';
+//Firebase
+import { fs } from '../../Config/Config';
+import { collection, getDocs } from 'firebase/firestore';
+//Other
+import { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import ReactPaginate from 'react-paginate';
 
@@ -140,13 +143,25 @@ function Home() {
                 </div>
                 <div className="col-lg-10">
                     <div className={cx('row', 'row-cols-5', 'custom-row')}>
-                        {currentItems.map((product, index) => {
-                            return (
-                                <div className="col" key={index}>
-                                    <ProductItem data={product} />
+                        {currentItems.length > 0 ? (
+                            currentItems.map((product, index) => {
+                                return (
+                                    <div className="col" key={index}>
+                                        <ProductItem data={product} />
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            <div className="loadingio-spinner-ellipsis-r5dy8elx01r">
+                                <div className="ldio-66p5as058f5">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
                                 </div>
-                            );
-                        })}
+                            </div>
+                        )}
                     </div>
                     <ReactPaginate
                         className="pagination justify-content-center"

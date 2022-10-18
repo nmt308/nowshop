@@ -1,17 +1,23 @@
-import { useContext, useEffect } from 'react';
-import { DetailProduct } from '../../layouts/DefaultLayout';
-import { CartQuantity } from '../../layouts/DefaultLayout';
-import classNames from 'classnames/bind';
+//Local
 import Style from './ProductDetail.module.scss';
 import Button from '../../components/Button';
-import { useState } from 'react';
+import { CartQuantity } from '../../layouts/DefaultLayout';
+//Firebase
 import { setDoc, doc } from 'firebase/firestore';
 import { fs, auth } from '../../Config/Config';
+//React
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+//Toastify
 import { notify } from '../../components/Toast';
 import { ToastContainer } from 'react-toastify';
+//Other
+import classNames from 'classnames/bind';
 import { NumericFormat } from 'react-number-format';
+
 const cx = classNames.bind(Style);
 function ProductDetail() {
+    const navigate = useNavigate();
     const product = JSON.parse(localStorage.getItem('productDetail'));
     const cartData = useContext(CartQuantity);
     const [qty, setQty] = useState(1);
@@ -19,6 +25,10 @@ function ProductDetail() {
         setQty((qty) => qty + 1);
     };
     const decreaseQty = () => {
+        if (qty < 2) {
+            notify('error', 'Số lượng tối thiểu là 1 !');
+            return;
+        }
         setQty((qty) => qty - 1);
     };
     const GetCurentUID = () => {
@@ -36,6 +46,11 @@ function ProductDetail() {
     };
     const uid = GetCurentUID();
     const addToCart = async () => {
+        if (!localStorage.getItem('user')) {
+            alert('Vui lòng đăng nhập');
+            navigate('/login');
+            return;
+        }
         product['qty'] = qty;
         product['TotalPrice'] = qty * product.priece;
         await setDoc(doc(fs, `cart-${uid}`, product.ID), {
@@ -46,21 +61,20 @@ function ProductDetail() {
         notify('success', 'Thêm thành công');
     };
     return (
-        <div class="section-content bg-white padding-y page-content">
-            <div class="container mt-4">
-                <div class="row">
-                    <aside class="col-md-6">
+        <div className="section-content bg-white padding-y page-content">
+            <div className="container mt-4">
+                <div className="row">
+                    <aside className="col-md-6">
                         <div className={cx('image')}>
                             {' '}
                             <img src={product.url} alt="ProductImage" />
                         </div>
                     </aside>
-                    <main class="col-md-6">
-                        <article class="product-info-aside">
+                    <main className="col-md-6">
+                        <article className="product-info-aside">
                             <h2 className={cx('title', 'mt-3')}>{product.name}</h2>
-
-                            <div class="mb-3">
-                                <h4 class="">
+                            <div className="mb-3">
+                                <h4>
                                     <NumericFormat
                                         value={product.priece}
                                         displayType={'text'}
@@ -68,7 +82,7 @@ function ProductDetail() {
                                         suffix={' VNĐ'}
                                     />
                                 </h4>
-                                <span class="text-decoration-line-through">
+                                <span className="text-decoration-line-through">
                                     <NumericFormat
                                         value={product.oldprice}
                                         displayType={'text'}
@@ -80,21 +94,21 @@ function ProductDetail() {
 
                             <p>{product.description}</p>
 
-                            <dl class="row">
-                                <dt class="col-sm-3">Hãng sản xuất</dt>
-                                <dd class="col-sm-9">Apple</dd>
+                            <dl className="row">
+                                <dt className="col-sm-3">Hãng sản xuất</dt>
+                                <dd className="col-sm-9">Apple</dd>
 
-                                <dt class="col-sm-3">Bảo hành</dt>
-                                <dd class="col-sm-9">2 năm</dd>
+                                <dt className="col-sm-3">Bảo hành</dt>
+                                <dd className="col-sm-9">2 năm</dd>
 
-                                <dt class="col-sm-3">Giao hàng</dt>
-                                <dd class="col-sm-9">2-4 ngày</dd>
+                                <dt className="col-sm-3">Giao hàng</dt>
+                                <dd className="col-sm-9">2-4 ngày</dd>
 
-                                <dt class="col-sm-3">Tình trạng</dt>
-                                <dd class="col-sm-9">Còn hàng</dd>
+                                <dt className="col-sm-3">Tình trạng</dt>
+                                <dd className="col-sm-9">Còn hàng</dd>
                             </dl>
 
-                            <div class="d-flex mt-4">
+                            <div className="d-flex mt-4">
                                 <div className={cx('product-text', 'quantity-box')}>
                                     <div className={cx('action-btns', 'minus')} onClick={decreaseQty}>
                                         <button>-</button>
@@ -106,7 +120,7 @@ function ProductDetail() {
                                 </div>
 
                                 <Button className={cx('btn btn-primary', 'custom-btn')} onClick={addToCart}>
-                                    <i class="fas fa-shopping-cart"></i> <span class="text">Thêm giỏ hàng</span>
+                                    <i className="fas fa-shopping-cart"></i> <span className="text">Thêm giỏ hàng</span>
                                 </Button>
                             </div>
                         </article>

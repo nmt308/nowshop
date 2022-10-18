@@ -1,11 +1,8 @@
-import Style from './Footer.module.scss';
 import { MDBFooter, MDBContainer, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
-import classNames from 'classnames/bind';
 import Button from '../Button/index';
 import LogoIcon from '../../assets/icon/logoIcon.png';
-import zalo from '../../assets/icon/zalo.png';
+
 function Footer() {
-    const cx = classNames.bind(Style);
     return (
         <MDBFooter bgColor="light" className="text-center text-lg-start text-muted">
             <MDBContainer className="text-center text-md-start mt-2">

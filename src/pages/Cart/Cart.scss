@@ -18,6 +18,16 @@
     border: 0;
     border-radius: unset;
 }
+.empty-cart {
+    width: 100%;
+    text-align: center;
+    padding-bottom: 24px;
+    img {
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
 .apply-btn {
     background-color: var(--primary-color);
     box-shadow: unset;

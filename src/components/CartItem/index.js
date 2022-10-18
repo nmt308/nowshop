@@ -1,8 +1,8 @@
 import Style from './CartItem.module.scss';
 import classNames from 'classnames/bind';
 import { NumericFormat } from 'react-number-format';
+const cx = classNames.bind(Style);
 function CartItem({ data, deleteProduct, increaseQty, decreaseQty }) {
-    const cx = classNames.bind(Style);
     return (
         <tr>
             <td>
@@ -11,9 +11,7 @@ function CartItem({ data, deleteProduct, increaseQty, decreaseQty }) {
                         <img src={data.url} className={cx('imgProduct')} alt="product" />
                     </div>
                     <figcaption className={cx('info')}>
-                        <div href="#" className={cx('title', 'text-dark')}>
-                            {data.name}
-                        </div>
+                        <div className={cx('title', 'text-dark')}>{data.name}</div>
                     </figcaption>
                 </figure>
             </td>

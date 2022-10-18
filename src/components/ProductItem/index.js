@@ -1,16 +1,11 @@
-import { auth, fs } from '../../Config/Config';
-import { doc, setDoc } from 'firebase/firestore';
-import { useContext, useEffect, useState } from 'react';
-import { CartQuantity } from '../../layouts/DefaultLayout';
-import { DetailProduct } from '../../layouts/DefaultLayout';
 import Button from '../Button';
 import Style from './ProductItem.module.scss';
 import classNames from 'classnames/bind';
 import FreeShipIcon from '../../assets/icon/freeship';
 import { NumericFormat } from 'react-number-format';
+const cx = classNames.bind(Style);
+
 export default function ProductItem({ data }) {
-    const cx = classNames.bind(Style);
-    const productDetail = useContext(DetailProduct);
     const discount = Math.ceil(data.oldprice / data.priece);
 
     return (
@@ -18,19 +13,18 @@ export default function ProductItem({ data }) {
             <Button
                 to={`/${data.name}-detail`}
                 onClick={() => {
-                    productDetail.setDetail(data);
                     localStorage.setItem('productDetail', JSON.stringify(data));
                 }}
             >
                 <div className={cx('product-img')}>
                     <img src={data.url} alt="Product" />
                 </div>
-                <div className="d-flex justify-content-between mt-2">
+                <div className={cx('product-title')}>
                     <div className={cx('product-name')}>{data.name}</div>
                     <FreeShipIcon />
                 </div>
                 <div className={cx('price')}>
-                    <div className={cx('product-oldprice', 'text-decoration-line-through')}>
+                    <div className={cx('product-oldprice')}>
                         <NumericFormat
                             value={data.oldprice}
                             displayType={'text'}
