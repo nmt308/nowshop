@@ -3,6 +3,7 @@ import ProductItem from '../../components/ProductItem';
 import './Search.scss';
 import Button from '../../components/Button';
 import { fs } from '../../Config/Config';
+import { useViewport } from '../../CustomHook';
 //Firebase
 import { getDocs, collection } from 'firebase/firestore';
 //React
@@ -14,8 +15,10 @@ function Search() {
     const [product, setProduct] = useState([]);
     const [render, setRender] = useState('');
     const [filter, setFilter] = useState('');
+    const [openMenu, setOpenMenu] = useState(false);
 
     let newBrand = useRef([]);
+    const menuRef = useRef();
 
     const getProducts = async () => {
         const getData = await getDocs(collection(fs, 'products'));
@@ -114,10 +117,39 @@ function Search() {
         setFilter('');
         newBrand.current = [];
     };
+
+    useEffect(() => {
+        if (openMenu) {
+            menuRef.current.style.height = menuRef.current.scrollHeight + 4 + 'px';
+        } else {
+            menuRef.current.style.height = 0;
+        }
+    }, [openMenu]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    const viewPort = useViewport();
+    const isMobile = viewPort.width <= 739;
+    const isTablet = viewPort.width > 739 && viewPort.width <= 992;
+
     return (
         <div className="container page-content">
+            {(isMobile || isTablet) && (
+                <div
+                    className="filter-bar"
+                    onClick={() => {
+                        setOpenMenu(!openMenu);
+                    }}
+                >
+                    <i className="fa-solid fa-sliders"></i>
+                    <span>Bộ lọc</span>
+                </div>
+            )}
+
             <div className="row">
-                <div className="col-lg-2">
+                <div className="col-lg-2 filter-container" ref={menuRef}>
                     <div className="filter-price">
                         <div className="filter-title">Sắp xếp giá</div>
                         <div className="filter">
@@ -188,9 +220,12 @@ function Search() {
                     </div>
                 </div>
                 <div className="col-lg-10">
-                    <div className="row row-cols-5 custom-row">
+                    <div className="row row-cols-xl-5 custom-row">
                         {dataRender.map((data, index) => (
-                            <div className="col" key={index}>
+                            <div
+                                className={isMobile ? 'col col-6' : 'col col-sm-4 col-md-4 col-lg-4 col-xl'}
+                                key={index}
+                            >
                                 <ProductItem data={data} key={index} />
                             </div>
                         ))}

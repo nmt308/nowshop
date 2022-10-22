@@ -1,8 +1,11 @@
 // local
 import Button from '../Button';
 import Style from './Header.module.scss';
-import logo from '../../assets/image/logo.png';
+import logoWeb from '../../assets/image/logo.png';
+import logoMobile from '../../assets/icon/logoIcon.png';
+import MenuItem from '../MenuItem';
 import Search from '../Search';
+import { useViewport } from '../../CustomHook';
 import { CartQuantity } from '../../layouts/DefaultLayout';
 // React
 import { useContext, useEffect, useRef, useState } from 'react';
@@ -12,8 +15,8 @@ import { auth, fs } from '../../Config/Config';
 import { collection, getDocs } from 'firebase/firestore';
 // Other
 import classNames from 'classnames/bind';
-import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
+import HeadlessTippy from '@tippyjs/react/headless';
 import lottie from 'lottie-web';
 
 const cx = classNames.bind(Style);
@@ -27,9 +30,11 @@ function Header() {
     const orderIcon1 = useRef();
     const orderIcon2 = useRef();
     const btnRef = useRef();
+    const menuRef = useRef();
 
     const cartData = useContext(CartQuantity);
     const [cartQty, setCartQty] = useState(0);
+    const [openMenu, setOpenMenu] = useState(false);
 
     const navigate = useNavigate();
 
@@ -55,6 +60,18 @@ function Header() {
     }, []);
 
     const user = localStorage.getItem('user');
+
+    useEffect(() => {
+        if (!user) {
+            return;
+        }
+        if (openMenu) {
+            menuRef.current.style.height = menuRef.current.scrollHeight + 4 + 'px';
+        } else {
+            menuRef.current.style.height = 0;
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [openMenu]);
 
     useEffect(() => {
         auth.onAuthStateChanged(async (user) => {
@@ -134,66 +151,123 @@ function Header() {
         return () => {
             lottie.destroy();
         };
-    }, []);
+    }, [user]);
+
+    const viewPort = useViewport();
+    const isMobile = viewPort.width <= 739;
+    const isTablet = viewPort.width > 739 && viewPort.width <= 992;
+    const isPc = viewPort.width > 992;
 
     return (
         <nav className={cx('navbar navbar-expand-lg navbar-light bg-light', 'navbar')}>
             <div className="container">
-                <Button
-                    className="navbar-toggler"
-                    type="button"
-                    data-toggle="collapse"
-                    data-target="#navbarTogglerDemo01"
-                    aria-controls="navbarTogglerDemo01"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation"
-                >
-                    <span className="navbar-toggler-icon"></span>
-                </Button>
                 <div className="navbar-collapse justify-content-between" id="navbarTogglerDemo01">
-                    <img
-                        src={logo}
-                        alt="logo"
-                        className={cx('logo')}
-                        onClick={() => {
-                            navigate('/');
-                        }}
-                    />
-                    <Search />
-
-                    {user ? (
-                        <div>
-                            <div className="d-flex flex-row align-items-center justify-content-center justify-content-lg-start action">
-                                <Tippy content={user} placement="bottom" ref={btnRef}>
+                    <div className={cx({ mobile: isMobile, tablet: isTablet, pc: isPc })}>
+                        {isMobile || isTablet ? (
+                            <img
+                                src={logoMobile}
+                                alt="logoMobile"
+                                className={cx('logo')}
+                                onClick={() => {
+                                    navigate('/');
+                                    setOpenMenu(false);
+                                }}
+                            />
+                        ) : (
+                            <img
+                                src={logoWeb}
+                                alt="logoWeb"
+                                className={cx('logo')}
+                                onClick={() => {
+                                    navigate('/');
+                                }}
+                            />
+                        )}
+                        <Search />
+                        {(isMobile && user) || (isTablet && user) ? (
+                            <Button
+                                className={cx('btn', 'custom-btn')}
+                                onClick={() => {
+                                    setOpenMenu(!openMenu);
+                                }}
+                            >
+                                <i className="fa-solid fa-bars"></i>
+                            </Button>
+                        ) : (
+                            <HeadlessTippy
+                                interactive
+                                delay={[0, 700]}
+                                placement="bottom-end"
+                                hideOnClick="false"
+                                render={(attrs) => (
+                                    <div className={cx('menu')}>
+                                        <a href="/login">Đăng nhập</a>
+                                        <a href="/register">Đăng kí</a>
+                                    </div>
+                                )}
+                            >
+                                <div className={cx('signin')}>
                                     <Button className={cx('btn', 'custom-btn')}>
                                         <div ref={userIcon1} className={cx('userIcon1')} />
                                         <div ref={userIcon2} className={cx('userIcon2')} />
                                     </Button>
-                                </Tippy>
-                                <Tippy content="Đơn hàng" placement="bottom">
+                                </div>
+                            </HeadlessTippy>
+                        )}
+                    </div>
+
+                    {user ? (
+                        <div
+                            onClick={() => {
+                                setOpenMenu(false);
+                            }}
+                            ref={menuRef}
+                            className={cx('action', {
+                                logged: user,
+                                active: openMenu,
+                            })}
+                        >
+                            <MenuItem content={user} placement="bottom" isPc>
+                                <div className={cx('action-item')}>
+                                    <Button className={cx('btn', 'custom-btn')}>
+                                        <div ref={userIcon1} className={cx('userIcon1')} />
+                                        <div ref={userIcon2} className={cx('userIcon2')} />
+                                    </Button>
+                                    <span>{user}</span>
+                                </div>
+                            </MenuItem>
+                            <MenuItem content="Đơn hàng" placement="bottom" isPc>
+                                <div className={cx('action-item')}>
                                     <Button className={cx('btn', 'custom-btn')} to="/order" ref={btnRef}>
                                         <div ref={orderIcon1} className={cx('orderIcon1')} />
                                         <div ref={orderIcon2} className={cx('orderIcon2')} />
                                     </Button>
-                                </Tippy>
-                                <Tippy content="Giỏ hàng" placement="bottom">
+                                    <span>Đơn hàng</span>
+                                </div>
+                            </MenuItem>
+                            <MenuItem content="Giỏ hàng" placement="bottom" isPc>
+                                <div className={cx('action-item')}>
                                     <Button className={cx('btn', 'custom-btn')} to="/cart" ref={btnRef}>
                                         <div ref={cartIcon1} className={cx('cartIcon1')} />
                                         <div ref={cartIcon2} className={cx('cartIcon2')} />
                                         <span className={cx('quantity')}>{cartQty}</span>
                                     </Button>
-                                </Tippy>
+                                    <span>Giỏ hàng</span>
+                                </div>
+                            </MenuItem>
 
-                                <Tippy content="Đăng xuất" placement="bottom">
+                            <MenuItem content="Đăng xuất" placement="bottom" isPc>
+                                <div className={cx('action-item')}>
                                     <Button className={cx('btn', 'custom-btn')} onClick={SignOut}>
                                         <div ref={logoutIcon1} className={cx('logoutIcon1')} />
                                         <div ref={logoutIcon2} className={cx('logoutIcon2')} />
                                     </Button>
-                                </Tippy>
-                            </div>
+                                    <span>Đăng xuất</span>
+                                </div>
+                            </MenuItem>
                         </div>
                     ) : (
-                        <div className="action">
+                        <div className={cx('authentication')}>
                             <Button className={cx('btn btn-link', 'btn-login')} to="/login">
                                 Đăng nhập
                             </Button>

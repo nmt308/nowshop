@@ -27,6 +27,10 @@ function Cart() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 const getData = await getDocs(collection(fs, `cart-${user.uid}`));
@@ -35,7 +39,6 @@ function Cart() {
                     setCarts((prev) => [...prev, cartDetail.product]);
                 });
             } else {
-                alert('Something went wrong. Please try again');
             }
         });
     }, []);
@@ -127,69 +130,37 @@ function Cart() {
     return (
         <div className="container page-content">
             <section className={cx('section-content padding-y')}>
-                <div className={cx('container mt-4')}>
+                <div className={cx('container')}>
                     <div className={cx('row')}>
-                        <main className={cx('col-md-9')}>
-                            <div className={cx('card')}>
-                                {carts.length > 0 ? (
-                                    <>
-                                        {' '}
-                                        <table className={cx('table table-borderless table-shopping-cart')}>
-                                            <thead className={cx('text-muted')}>
-                                                <tr className={cx('small text-uppercase')}>
-                                                    <th scope="col">Sản phẩm</th>
-                                                    <th scope="col" width="140">
-                                                        Số lượng
-                                                    </th>
-                                                    <th scope="col" width="200">
-                                                        Giá
-                                                    </th>
-                                                    <th scope="col" width="120">
-                                                        {' '}
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {carts.map((cart, index) => {
-                                                    return (
-                                                        <CartItem
-                                                            data={cart}
-                                                            key={index}
-                                                            deleteProduct={() => {
-                                                                deleteProduct(cart.ID);
-                                                            }}
-                                                            increaseQty={() => {
-                                                                increaseQty(cart, cart.ID);
-                                                            }}
-                                                            decreaseQty={() => {
-                                                                decreaseQty(cart, cart.ID);
-                                                            }}
-                                                        />
-                                                    );
-                                                })}
-                                            </tbody>
-                                        </table>
-                                        <div className={cx('card-body border-top')}>
-                                            <Button to="/" className={cx('btn btn-light', 'back-btn')}>
-                                                {' '}
-                                                <i className={cx('fa fa-chevron-left')}></i> Quay lại{' '}
-                                            </Button>
-                                            <Button
-                                                className={cx('btn btn-primary float-md-right', 'apply-btn')}
-                                                onClick={handlePayment}
-                                            >
-                                                {' '}
-                                                Thanh toán <i className={cx('fa fa-chevron-right')}></i>{' '}
-                                            </Button>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <div className={cx('empty-cart')}>
-                                        <img src={empty} alt="empty" />
-                                        <h5>Giỏ hàng đang trống</h5>
-                                    </div>
-                                )}
-                            </div>
+                        <h4>Giỏ hàng ({carts.length}) </h4>
+                        <main className={cx('col-xl-9 col-md-12 col-sm-12 col-12')}>
+                            {carts.length > 0 ? (
+                                <>
+                                    {' '}
+                                    {carts.map((cart, index) => {
+                                        return (
+                                            <CartItem
+                                                data={cart}
+                                                key={index}
+                                                deleteProduct={() => {
+                                                    deleteProduct(cart.ID);
+                                                }}
+                                                increaseQty={() => {
+                                                    increaseQty(cart, cart.ID);
+                                                }}
+                                                decreaseQty={() => {
+                                                    decreaseQty(cart, cart.ID);
+                                                }}
+                                            />
+                                        );
+                                    })}
+                                </>
+                            ) : (
+                                <div className={cx('empty-cart')}>
+                                    <img src={empty} alt="empty" />
+                                    <h5>Giỏ hàng đang trống</h5>
+                                </div>
+                            )}
 
                             <div className={cx('alert alert-success mt-3')}>
                                 <span className={cx('icontext')}>
@@ -198,7 +169,7 @@ function Cart() {
                                 </span>
                             </div>
                         </main>
-                        <aside className={cx('col-md-3')}>
+                        <aside className={cx('col-xl-3 col-md-12 col-sm-12 col-12')}>
                             <div className={cx('card mb-3')}>
                                 <div className={cx('body')}>
                                     <div className={cx('form-group')}>
@@ -253,6 +224,13 @@ function Cart() {
                                             </div>
                                         </dd>
                                     </div>
+                                    <Button
+                                        className={cx('btn btn-primary float-md-right w-100', 'apply-btn')}
+                                        onClick={handlePayment}
+                                    >
+                                        {' '}
+                                        Thanh toán
+                                    </Button>
                                     <hr></hr>
                                     <p className={cx('text-center')}>
                                         <img src={payment} height="32" alt="payment" />
@@ -263,7 +241,7 @@ function Cart() {
                     </div>
                 </div>
             </section>
-            <ToastContainer />
+            <ToastContainer className={cx('custom-Toast')} />
         </div>
     );
 }

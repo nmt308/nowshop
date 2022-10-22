@@ -10,10 +10,15 @@ import { useEffect } from 'react';
 //Other
 import classNames from 'classnames/bind';
 import { NumericFormat } from 'react-number-format';
+
 const cx = classNames.bind(Style);
 
 function Order() {
     const [orders, setOrders] = useState([]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     useEffect(() => {
         auth.onAuthStateChanged(async (user) => {

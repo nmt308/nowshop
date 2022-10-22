@@ -3,8 +3,8 @@ import Style from './ProductItem.module.scss';
 import classNames from 'classnames/bind';
 import FreeShipIcon from '../../assets/icon/freeship';
 import { NumericFormat } from 'react-number-format';
-const cx = classNames.bind(Style);
 
+const cx = classNames.bind(Style);
 export default function ProductItem({ data }) {
     const discount = Math.ceil(data.oldprice / data.priece);
 

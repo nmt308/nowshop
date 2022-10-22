@@ -12,20 +12,20 @@ function Footer() {
                     </div>
 
                     <div>
-                        <Button href="//www.facebook.com/nmt.3008" target="_blank" className="me-4 text-reset">
+                        <Button href="//www.facebook.com/nmt.3008" target="_blank" className="px-3 text-reset">
                             <MDBIcon fab icon="facebook-f" />
                         </Button>
-                        <Button href="https://www.instagram.com/nmt300801/" target="_blank" className="me-4 text-reset">
+                        <Button href="https://www.instagram.com/nmt300801/" target="_blank" className="px-3 text-reset">
                             <MDBIcon fab icon="instagram" />
                         </Button>
                         <Button
                             href="https://www.linkedin.com/in/minh-th%C3%A0nh-nguy%E1%BB%85n-a16a57251/"
                             target="_blank"
-                            className="me-4 text-reset"
+                            className="px-3 text-reset"
                         >
                             <MDBIcon fab icon="linkedin" />
                         </Button>
-                        <Button href="https://github.com/nmt308" target="_blank" className="me-4 text-reset">
+                        <Button href="https://github.com/nmt308" target="_blank" className="px-3 text-reset">
                             <MDBIcon fab icon="github" />
                         </Button>
                     </div>
@@ -35,7 +35,7 @@ function Footer() {
             <section className="">
                 <MDBContainer className="text-center text-md-start mt-5">
                     <MDBRow className="mt-3">
-                        <MDBCol md="6" lg="5" className="mb-4">
+                        <MDBCol md="5" lg="5" className="mb-4">
                             <div className="text-uppercase fw-bold mb-4">
                                 <img src={LogoIcon} alt="Logo" width={28} height={28} />
                                 <span className="ms-2">NowShop Coporation</span>
@@ -46,8 +46,8 @@ function Footer() {
                                 của khách hàng hơn bất kỳ công ty nào khác.
                             </p>
                         </MDBCol>
-                        <MDBCol md="6" lg="1" className="mb-4"></MDBCol>
-                        <MDBCol md="2" lg="3" className="mx-auto  mb-4">
+                        <MDBCol className="col-md-1 col-lg-1 d-none d-sm-none d-md-none d-lg-block mb-4"></MDBCol>
+                        <MDBCol md="3" lg="3" className="mx-auto  mb-4">
                             <h6 className="text-uppercase fw-bold mb-4">TRANG KHÁC</h6>
                             <p>
                                 <a href="#!" className="text-reset">
@@ -71,7 +71,7 @@ function Footer() {
                             </p>
                         </MDBCol>
 
-                        <MDBCol md="4" lg="3" className="mx-auto  mb-md-0 mb-4">
+                        <MDBCol md="4" lg="3" className="mx-auto mb-md-0 mb-4">
                             <h6 className="text-uppercase fw-bold mb-4">LIÊN HỆ</h6>
                             <p>
                                 <MDBIcon icon="home" className="me-4" />

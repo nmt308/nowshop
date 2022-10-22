@@ -1,6 +1,7 @@
 //Local
 import ProductItem from '../../components/ProductItem';
 import Carousel from '../../components/Carousel';
+import { useViewport } from '../../CustomHook';
 import './Home.scss';
 //Firebase
 import { fs } from '../../Config/Config';
@@ -15,6 +16,7 @@ function Home() {
     const [product, setProduct] = useState([]);
     const [category, setCategory] = useState([]);
     const [active, setActive] = useState('all');
+    const [open, setOpen] = useState(false);
 
     // Paginate items
     const [currentItems, setCurrentItems] = useState([]);
@@ -57,6 +59,10 @@ function Home() {
         dataRender = product;
     }
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     // Filter products
     const filterProduct = (category) => {
         setActive(category);
@@ -87,24 +93,32 @@ function Home() {
 
     // Handle Paginate
     useEffect(() => {
-        const endOffset = itemOffset + 5;
+        const endOffset = itemOffset + 10;
         setCurrentItems(dataRender.slice(itemOffset, endOffset));
-        setPageCount(Math.ceil(dataRender.length / 5));
+        setPageCount(Math.ceil(dataRender.length / 10));
     }, [itemOffset, dataRender]);
 
     const handlePageClick = (event) => {
-        const newOffset = (event.selected * 5) % dataRender.length;
+        const newOffset = (event.selected * 10) % dataRender.length;
         setItemOffset(newOffset);
         setCurrentPage('');
     };
 
+    //Open category
+    const handleMenu = (event) => {
+        setOpen(!open);
+    };
+
+    const viewPort = useViewport();
+    const isMobile = viewPort.width <= 739;
+
     return (
         <div className="container page-content">
             <div className="row">
-                <div className="col col-lg-9">
+                <div className="col col-lg-9 ">
                     <Carousel />
                 </div>
-                <div className="col col-lg-3">
+                <div className="col col-lg-3 d-none d-sm-none d-md-block">
                     <div className="policy-list">
                         <div className="policy-item">
                             <p>Bảo hành tận tâm</p>
@@ -123,7 +137,15 @@ function Home() {
             </div>
             <div className={cx('row')}>
                 <div className="col col-lg-2">
-                    <ul className="list-group">
+                    <ul
+                        className={cx('list-group', {
+                            active: open,
+                        })}
+                    >
+                        <div className={cx('list-group-item')} onClick={handleMenu}>
+                            <i className="fa-solid fa-list-ul"></i>
+                            <span>Danh mục</span>
+                        </div>
                         {categories.map((category) => {
                             return (
                                 <li
@@ -142,11 +164,14 @@ function Home() {
                     </ul>
                 </div>
                 <div className="col-lg-10">
-                    <div className={cx('row', 'row-cols-5', 'custom-row')}>
+                    <div className={cx('row', 'row-cols-xl-5', 'custom-row')}>
                         {currentItems.length > 0 ? (
                             currentItems.map((product, index) => {
                                 return (
-                                    <div className="col" key={index}>
+                                    <div
+                                        className={isMobile ? 'col col-6' : 'col col-sm-4 col-md-4 col-lg-3 col-xl'}
+                                        key={index}
+                                    >
                                         <ProductItem data={product} />
                                     </div>
                                 );

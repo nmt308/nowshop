@@ -108,7 +108,7 @@ function Search() {
             <div className={cx('search')}>
                 <input
                     ref={inputRef}
-                    placeholder="Tìm kiếm sản phẩm ..."
+                    placeholder="Tìm kiếm ..."
                     value={value}
                     onChange={handleValue}
                     onFocus={() => {

@@ -21,9 +21,15 @@ function ProductDetail() {
     const product = JSON.parse(localStorage.getItem('productDetail'));
     const cartData = useContext(CartQuantity);
     const [qty, setQty] = useState(1);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const increaseQty = () => {
         setQty((qty) => qty + 1);
     };
+
     const decreaseQty = () => {
         if (qty < 2) {
             notify('error', 'Số lượng tối thiểu là 1 !');
@@ -31,6 +37,7 @@ function ProductDetail() {
         }
         setQty((qty) => qty - 1);
     };
+
     const GetCurentUID = () => {
         const [user, setUser] = useState(null);
         useEffect(() => {
@@ -44,7 +51,9 @@ function ProductDetail() {
         }, []);
         return user;
     };
+
     const uid = GetCurentUID();
+
     const addToCart = async () => {
         if (!localStorage.getItem('user')) {
             alert('Vui lòng đăng nhập');
@@ -57,7 +66,6 @@ function ProductDetail() {
             product,
         });
         cartData.setCartChange(!cartData.cartChange);
-
         notify('success', 'Thêm thành công');
     };
     return (

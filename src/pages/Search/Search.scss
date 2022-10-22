@@ -20,4 +20,36 @@
     &-brand {
         padding: 12px 0;
     }
+    &-remove {
+        margin-bottom: 12px;
+    }
+}
+//Responsive
+@media (max-width: 739px) {
+    .filter-container {
+        height: 0;
+        overflow: hidden;
+        transition: all 0.5s ease;
+    }
+    .filter-bar {
+        margin-bottom: 12px;
+        font-weight: 600;
+        span {
+            margin-left: 8px;
+        }
+    }
+}
+@media (min-width: 740px) and (max-width: 992px) {
+    .filter-container {
+        height: 0;
+        overflow: hidden;
+        transition: all 0.5s ease;
+    }
+    .filter-bar {
+        margin-bottom: 12px;
+        font-weight: 600;
+        span {
+            margin-left: 8px;
+        }
+    }
 }
