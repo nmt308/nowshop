@@ -6,8 +6,7 @@ import { NumericFormat } from 'react-number-format';
 
 const cx = classNames.bind(Style);
 export default function ProductItem({ data }) {
-    const discount = Math.ceil(data.oldprice / data.priece);
-
+    const discount = 100 - Math.ceil((data.price / data.oldprice) * 100);
     return (
         <div className={cx('product-item')}>
             <Button
@@ -35,7 +34,7 @@ export default function ProductItem({ data }) {
                         </div>
                         <div className={cx('product-price')}>
                             <NumericFormat
-                                value={data.priece}
+                                value={data.price}
                                 displayType={'text'}
                                 thousandSeparator={true}
                                 suffix={' VNĐ'}

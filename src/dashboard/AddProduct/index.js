@@ -14,7 +14,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 function AddProduct() {
     const [name, setName] = useState('');
-    const [priece, setPriece] = useState('');
+    const [price, setprice] = useState('');
     const [oldprice, setOldprice] = useState('');
     const [image, setImage] = useState(null);
     const [typeProduct, setTypeProduct] = useState('');
@@ -59,7 +59,7 @@ function AddProduct() {
                 const url = await getDownloadURL(ref(storage, storageRef));
                 await addDoc(collection(fs, 'products'), {
                     name,
-                    priece,
+                    price,
                     oldprice,
                     url,
                     typeProduct,
@@ -91,10 +91,10 @@ function AddProduct() {
 
                                 <MDBValidationItem className="col-md-12 mb-4">
                                     <MDBInput
-                                        onChange={(e) => setPriece(e.target.value)}
-                                        value={priece}
-                                        placeholder="Type your priece"
-                                        label="Priece"
+                                        onChange={(e) => setprice(e.target.value)}
+                                        value={price}
+                                        placeholder="Type your price"
+                                        label="price"
                                         className="form-control-lg"
                                     />
                                 </MDBValidationItem>

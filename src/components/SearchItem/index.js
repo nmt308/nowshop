@@ -12,7 +12,7 @@ function SearchItem({ data, onClick }) {
                     <span>{data.name}</span>
                 </h4>
                 <span className={Style.price}>
-                    <NumericFormat value={data.priece} displayType={'text'} thousandSeparator={true} suffix={' VNĐ'} />
+                    <NumericFormat value={data.price} displayType={'text'} thousandSeparator={true} suffix={' VNĐ'} />
                 </span>
             </div>
         </Link>

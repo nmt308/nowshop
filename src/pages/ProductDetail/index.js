@@ -61,7 +61,7 @@ function ProductDetail() {
             return;
         }
         product['qty'] = qty;
-        product['TotalPrice'] = qty * product.priece;
+        product['TotalPrice'] = qty * product.price;
         await setDoc(doc(fs, `cart-${uid}`, product.ID), {
             product,
         });
@@ -84,7 +84,7 @@ function ProductDetail() {
                             <div className="mb-3">
                                 <h4>
                                     <NumericFormat
-                                        value={product.priece}
+                                        value={product.price}
                                         displayType={'text'}
                                         thousandSeparator={true}
                                         suffix={' VNĐ'}

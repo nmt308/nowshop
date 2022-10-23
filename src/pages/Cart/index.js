@@ -61,7 +61,7 @@ function Cart() {
     const increaseQty = async (cart, id) => {
         product = cart;
         product.qty = product.qty + 1;
-        product.TotalPrice = product.priece * product.qty;
+        product.TotalPrice = product.price * product.qty;
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 await updateDoc(doc(fs, `cart-${user.uid}`, `${id}`), {
@@ -81,7 +81,7 @@ function Cart() {
             return;
         }
         product.qty = product.qty - 1;
-        product.TotalPrice = product.priece * product.qty;
+        product.TotalPrice = product.price * product.qty;
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 await updateDoc(doc(fs, `cart-${user.uid}`, `${id}`), {

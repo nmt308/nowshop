@@ -113,7 +113,7 @@ function Search() {
         const sortData = () => {
             for (let i = 0; i < data.length; i++) {
                 for (let j = 0; j < data.length - 1; j++) {
-                    if (data[j].priece < data[j + 1].priece) {
+                    if (data[j].price < data[j + 1].price) {
                         [data[j], data[j + 1]] = [data[j + 1], data[j]];
                     }
                 }
@@ -129,7 +129,7 @@ function Search() {
         const sortData = () => {
             for (let i = 0; i < data.length; i++) {
                 for (let j = 0; j < data.length - 1; j++) {
-                    if (data[j].priece > data[j + 1].priece) {
+                    if (data[j].price > data[j + 1].price) {
                         [data[j], data[j + 1]] = [data[j + 1], data[j]];
                     }
                 }
