@@ -24,6 +24,12 @@
         margin-bottom: 12px;
     }
 }
+.notFound {
+    text-align: center;
+    img {
+        max-width: 450px;
+    }
+}
 //Responsive
 @media (max-width: 739px) {
     .filter-container {

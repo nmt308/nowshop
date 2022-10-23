@@ -69,7 +69,7 @@ function ProductDetail() {
         notify('success', 'Thêm thành công');
     };
     return (
-        <div className="section-content bg-white padding-y page-content">
+        <div className={cx('section-content')}>
             <div className="container mt-4">
                 <div className="row">
                     <aside className="col-md-6">
@@ -104,7 +104,7 @@ function ProductDetail() {
 
                             <dl className="row">
                                 <dt className="col-sm-3">Hãng sản xuất</dt>
-                                <dd className="col-sm-9">Apple</dd>
+                                <dd className="col-sm-9">{product.brand.toUpperCase()}</dd>
 
                                 <dt className="col-sm-3">Bảo hành</dt>
                                 <dd className="col-sm-9">2 năm</dd>

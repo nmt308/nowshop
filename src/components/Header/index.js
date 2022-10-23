@@ -237,8 +237,13 @@ function Header() {
                                 </div>
                             </MenuItem>
                             <MenuItem content="Đơn hàng" placement="bottom" isPc>
-                                <div className={cx('action-item')}>
-                                    <Button className={cx('btn', 'custom-btn')} to="/order" ref={btnRef}>
+                                <div
+                                    className={cx('action-item')}
+                                    onClick={() => {
+                                        navigate('/order');
+                                    }}
+                                >
+                                    <Button className={cx('btn', 'custom-btn')} ref={btnRef}>
                                         <div ref={orderIcon1} className={cx('orderIcon1')} />
                                         <div ref={orderIcon2} className={cx('orderIcon2')} />
                                     </Button>
@@ -246,8 +251,13 @@ function Header() {
                                 </div>
                             </MenuItem>
                             <MenuItem content="Giỏ hàng" placement="bottom" isPc>
-                                <div className={cx('action-item')}>
-                                    <Button className={cx('btn', 'custom-btn')} to="/cart" ref={btnRef}>
+                                <div
+                                    className={cx('action-item')}
+                                    onClick={() => {
+                                        navigate('/cart');
+                                    }}
+                                >
+                                    <Button className={cx('btn', 'custom-btn')} ref={btnRef}>
                                         <div ref={cartIcon1} className={cx('cartIcon1')} />
                                         <div ref={cartIcon2} className={cx('cartIcon2')} />
                                         <span className={cx('quantity')}>{cartQty}</span>
@@ -257,8 +267,8 @@ function Header() {
                             </MenuItem>
 
                             <MenuItem content="Đăng xuất" placement="bottom" isPc>
-                                <div className={cx('action-item')}>
-                                    <Button className={cx('btn', 'custom-btn')} onClick={SignOut}>
+                                <div className={cx('action-item')} onClick={SignOut}>
+                                    <Button className={cx('btn', 'custom-btn')}>
                                         <div ref={logoutIcon1} className={cx('logoutIcon1')} />
                                         <div ref={logoutIcon2} className={cx('logoutIcon2')} />
                                     </Button>

@@ -2,6 +2,7 @@
 import ProductItem from '../../components/ProductItem';
 import Carousel from '../../components/Carousel';
 import { useViewport } from '../../CustomHook';
+import banner from '../../assets/image/banner4.webp';
 import './Home.scss';
 //Firebase
 import { fs } from '../../Config/Config';
@@ -43,11 +44,11 @@ function Home() {
             name: 'Máy tính bảng',
         },
         {
-            type: 'accessory',
+            type: 'electronic',
             name: 'Phụ kiện điện tử',
         },
         {
-            type: 'smart device',
+            type: 'smartdevice',
             name: 'Thiết bị thông minh',
         },
     ];
@@ -69,8 +70,8 @@ function Home() {
         if (category === 'all') {
             setCategory(product);
         } else {
-            const filterData = product.filter((product) =>
-                product.category.toLowerCase().includes(category.toLowerCase()),
+            const filterData = product.filter(
+                (product) => product.typeProduct.toLowerCase() === category.toLowerCase(),
             );
             setCategory(filterData);
         }
@@ -135,6 +136,7 @@ function Home() {
                     </div>
                 </div>
             </div>
+            <img src={banner} alt="banner" className="banner" />
             <div className={cx('row')}>
                 <div className="col col-lg-2">
                     <ul

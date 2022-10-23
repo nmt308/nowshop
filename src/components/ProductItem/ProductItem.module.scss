@@ -4,18 +4,27 @@
         padding: 12px;
         padding-top: 24px;
         position: relative;
+        height: 100%;
         p {
             margin-top: 16px;
             margin-bottom: 0;
         }
         a {
             color: unset;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: space-between;
         }
     }
     &-img {
-        text-align: center;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         img {
             width: 85%;
+            position: relative;
         }
     }
     &-title {

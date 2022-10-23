@@ -17,8 +17,28 @@ function AddProduct() {
     const [priece, setPriece] = useState('');
     const [oldprice, setOldprice] = useState('');
     const [image, setImage] = useState(null);
+    const [typeProduct, setTypeProduct] = useState('');
+    const [brand, setBrand] = useState('');
 
     const type = ['image/png', 'image/jpeg', 'image/PNG', 'image/JPG', 'image/jpg'];
+
+    const listType = [
+        { value: 'Laptop', label: 'Laptop' },
+        { value: 'Phone', label: 'Điện thoại' },
+        { value: 'Tablet', label: 'Máy tính bảng' },
+        { value: 'Electronic', label: 'Phụ kiện điện tử' },
+        { value: 'SmartDevice', label: 'Thiết bị thông minh' },
+    ];
+
+    const listBrand = [
+        { value: 'xiaomi', label: 'Xiaomi' },
+        { value: 'apple', label: 'Apple' },
+        { value: 'oppo', label: 'Oppo' },
+        { value: 'samsung', label: 'Samsung' },
+        { value: 'Asus', label: 'Asus' },
+        { value: 'Dell', label: 'Dell' },
+    ];
+
     const handleImage = (e) => {
         let image = e.target.files[0];
         if (image && type.includes(image.type)) {
@@ -42,6 +62,8 @@ function AddProduct() {
                     priece,
                     oldprice,
                     url,
+                    typeProduct,
+                    brand,
                 });
                 notify('success', 'Create product success');
             })
@@ -90,6 +112,46 @@ function AddProduct() {
                                 <MDBValidationItem className="col-md-12 mb-4">
                                     <MDBFile label="Image" id="customFile" onChange={handleImage} />
                                 </MDBValidationItem>
+
+                                <select
+                                    name="typeProduct"
+                                    id="type"
+                                    onChange={(e) => {
+                                        setTypeProduct(e.target.value);
+                                        console.log(e.target.value);
+                                    }}
+                                >
+                                    <option disabled selected hidden>
+                                        Phân loại
+                                    </option>
+                                    {listType.map((type, index) => {
+                                        return (
+                                            <option value={type.value} key={index}>
+                                                {type.label}
+                                            </option>
+                                        );
+                                    })}
+                                </select>
+
+                                <select
+                                    name="brandProduct"
+                                    id="brand"
+                                    onChange={(e) => {
+                                        setBrand(e.target.value);
+                                    }}
+                                >
+                                    <option disabled selected hidden>
+                                        Thương hiệu
+                                    </option>
+                                    {listBrand.map((type, index) => {
+                                        return (
+                                            <option value={type.value} key={index}>
+                                                {type.label}
+                                            </option>
+                                        );
+                                    })}
+                                </select>
+
                                 <CKEditor
                                     editor={ClassicEditor}
                                     data="<p>Hello from CKEditor 5!</p>"

@@ -20,12 +20,12 @@ function Search() {
     const [loading, setLoading] = useState(false);
 
     const inputRef = useRef();
-    const navigate = useNavigate();
     const debounce = useDebounce(value, 500);
 
     const handleTooltip = () => {
         setToolTip(false);
     };
+
     const handleValue = (e) => {
         const value = e.target.value;
         if (value.startsWith(' ')) {
@@ -33,13 +33,14 @@ function Search() {
         }
         setValue(value);
     };
+
     const handleSearch = () => {
         if (!value) {
             return;
         } else {
             setValue('');
-            navigate('/search');
             localStorage.setItem('search', value);
+            window.location.href = '/search';
         }
     };
 
@@ -113,6 +114,11 @@ function Search() {
                     onChange={handleValue}
                     onFocus={() => {
                         setToolTip(true);
+                    }}
+                    onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                            handleSearch(e);
+                        }
                     }}
                 />
                 <div

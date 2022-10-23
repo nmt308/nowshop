@@ -4,7 +4,9 @@ import { NumericFormat } from 'react-number-format';
 function SearchItem({ data, onClick }) {
     return (
         <Link to={`/${data.name}-detail`} className={Style.wrapper} onClick={onClick}>
-            <img className={Style.avatar} src={data.url} alt={data.name} />
+            <div className={Style.avatar}>
+                <img src={data.url} alt={data.name} />
+            </div>
             <div className={Style.info}>
                 <h4 className={Style.name}>
                     <span>{data.name}</span>

@@ -19,26 +19,28 @@ export default function ProductItem({ data }) {
                 <div className={cx('product-img')}>
                     <img src={data.url} alt="Product" />
                 </div>
-                <div className={cx('product-title')}>
-                    <div className={cx('product-name')}>{data.name}</div>
-                    <FreeShipIcon />
-                </div>
-                <div className={cx('price')}>
-                    <div className={cx('product-oldprice')}>
-                        <NumericFormat
-                            value={data.oldprice}
-                            displayType={'text'}
-                            thousandSeparator={true}
-                            suffix={' VNĐ'}
-                        />
+                <div>
+                    <div className={cx('product-title')}>
+                        <div className={cx('product-name')}>{data.name}</div>
+                        <FreeShipIcon />
                     </div>
-                    <div className={cx('product-price')}>
-                        <NumericFormat
-                            value={data.priece}
-                            displayType={'text'}
-                            thousandSeparator={true}
-                            suffix={' VNĐ'}
-                        />
+                    <div className={cx('price')}>
+                        <div className={cx('product-oldprice')}>
+                            <NumericFormat
+                                value={data.oldprice}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                suffix={' VNĐ'}
+                            />
+                        </div>
+                        <div className={cx('product-price')}>
+                            <NumericFormat
+                                value={data.priece}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                suffix={' VNĐ'}
+                            />
+                        </div>
                     </div>
                 </div>
             </Button>

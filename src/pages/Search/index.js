@@ -4,15 +4,19 @@ import './Search.scss';
 import Button from '../../components/Button';
 import { fs } from '../../Config/Config';
 import { useViewport } from '../../CustomHook';
+import NotFound from '../../assets/icon/notfound.png';
 //Firebase
 import { getDocs, collection } from 'firebase/firestore';
 //React
 import { useEffect, useState } from 'react';
 import { useRef } from 'react';
+/*Toastify*/
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { notify } from '../../components/Toast';
 
 function Search() {
     const dataSearch = localStorage.getItem('search');
-    const [product, setProduct] = useState([]);
     const [render, setRender] = useState('');
     const [filter, setFilter] = useState('');
     const [openMenu, setOpenMenu] = useState(false);
@@ -20,12 +24,23 @@ function Search() {
     let newBrand = useRef([]);
     const menuRef = useRef();
 
+    const listBrand = [
+        { value: 'xiaomi', label: 'Xiaomi' },
+        { value: 'apple', label: 'Apple' },
+        { value: 'oppo', label: 'Oppo' },
+        { value: 'samsung', label: 'Samsung' },
+        { value: 'asus', label: 'Asus' },
+        { value: 'dell', label: 'Dell' },
+    ];
+
     const getProducts = async () => {
         const getData = await getDocs(collection(fs, 'products'));
+        let searchResult = [];
         getData.forEach((snap) => {
             const product = snap.data();
             product.ID = snap.id;
-            setProduct((products) => [...products, product]);
+            searchResult.push(product);
+            localStorage.setItem('getProducts', JSON.stringify(searchResult));
         });
     };
 
@@ -33,7 +48,8 @@ function Search() {
         getProducts();
     }, []);
 
-    let searchResult = product.filter((product) => product.name.toLowerCase().includes(dataSearch.toLowerCase()));
+    const getResult = JSON.parse(localStorage.getItem('getProducts')) || [];
+    let searchResult = getResult.filter((product) => product.name.toLowerCase().includes(dataSearch.toLowerCase()));
 
     let dataRender = searchResult;
     let newFilters = [];
@@ -43,22 +59,35 @@ function Search() {
     }
 
     const filterBrand = (data) => {
+        //Kiểm tra brand đã có trong list chưa để uncheck
         if (newBrand.current.includes(data)) {
             if (newBrand.current.length > 1) {
                 //Phải lớn hơn 1 nếu không khi mảng có 1 phần tử uncheck sẽ còn phần tử đó
                 newBrand.current = newBrand.current.filter((x) => {
                     return x !== data;
                 });
+                console.log('remove:', newBrand.current);
             } else if (newBrand.current.length === 1) {
                 newBrand.current = [];
             }
         } else {
-            newBrand.current.push(data);
+            //Trước khi lưu vào list, kiểm tra danh sách sản phẩm có brand đó không
+            const listBrandAvailable = [];
+            searchResult.forEach((result) => {
+                listBrandAvailable.push(result.brand);
+            });
+            if (listBrandAvailable.includes(data)) {
+                newBrand.current.push(data);
+                console.log(newBrand.current);
+            } else {
+                notify('error', 'Không có hãng tương ứng !');
+            }
         }
+        // Lấy dữ liệu các sản phẩm có brand nằm trong newBrand
         if (newBrand.current.length > 0) {
-            newBrand.current.forEach((category) => {
+            newBrand.current.forEach((item) => {
                 searchResult.forEach((data) => {
-                    if (data.category.includes(category)) {
+                    if (data.brand === item) {
                         newFilters.push(data);
                         if (filter === 'increase') {
                             increaseHandle(newFilters);
@@ -119,14 +148,6 @@ function Search() {
     };
 
     useEffect(() => {
-        if (openMenu) {
-            menuRef.current.style.height = menuRef.current.scrollHeight + 4 + 'px';
-        } else {
-            menuRef.current.style.height = 0;
-        }
-    }, [openMenu]);
-
-    useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
@@ -134,9 +155,26 @@ function Search() {
     const isMobile = viewPort.width <= 739;
     const isTablet = viewPort.width > 739 && viewPort.width <= 992;
 
+    useEffect(() => {
+        if (searchResult.length > 0 && (isMobile || isTablet)) {
+            if (openMenu) {
+                menuRef.current.style.height = menuRef.current.scrollHeight + 4 + 'px';
+            } else {
+                menuRef.current.style.height = 0;
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [openMenu]);
+
     return (
         <div className="container page-content">
-            {(isMobile || isTablet) && (
+            {searchResult.length === 0 && (
+                <div className="notFound">
+                    <img src={NotFound} alt="File not found" className="w-100" />
+                    <h5>Không tìm thấy sản phẩm nào</h5>
+                </div>
+            )}
+            {(isMobile || isTablet) && searchResult.length > 0 && (
                 <div
                     className="filter-bar"
                     onClick={() => {
@@ -149,76 +187,69 @@ function Search() {
             )}
 
             <div className="row">
-                <div className="col-lg-2 filter-container" ref={menuRef}>
-                    <div className="filter-price">
-                        <div className="filter-title">Sắp xếp giá</div>
-                        <div className="filter">
-                            <input
-                                className="form-check-input"
-                                type="radio"
-                                name="filter"
-                                checked={filter === 'increase'}
-                                value="increase"
-                                onChange={(e) => {
-                                    increaseHandle(dataRender);
-                                }}
-                            />
-                            <span>Tăng dần</span>
+                {searchResult.length > 0 && (
+                    <div className="col-lg-2 filter-container" ref={menuRef}>
+                        <div className="filter-price">
+                            <div className="filter-title">Sắp xếp giá</div>
+                            <div className="filter">
+                                <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    name="filter"
+                                    checked={filter === 'increase'}
+                                    value="increase"
+                                    onChange={(e) => {
+                                        increaseHandle(dataRender);
+                                    }}
+                                />
+                                <span>Tăng dần</span>
+                            </div>
+                            <div className="filter">
+                                <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    name="filter"
+                                    checked={filter === 'decrease'}
+                                    value="decrease"
+                                    onChange={(e) => {
+                                        decreaseHandle(dataRender);
+                                    }}
+                                />
+                                <span>Giảm dần</span>
+                            </div>
                         </div>
-                        <div className="filter">
-                            <input
-                                className="form-check-input"
-                                type="radio"
-                                name="filter"
-                                checked={filter === 'decrease'}
-                                value="decrease"
-                                onChange={(e) => {
-                                    decreaseHandle(dataRender);
-                                }}
-                            />
-                            <span>Giảm dần</span>
-                        </div>
-                    </div>
-                    <div className="filter-brand">
-                        <div className="filter-title">Thương hiệu</div>
-                        <div className="filter">
-                            <input
-                                className="form-check-input"
-                                type="checkbox"
-                                checked={newBrand.current.includes('phone')}
-                                value="phone"
-                                onChange={(e) => {
-                                    filterBrand(e.target.value);
-                                }}
-                            />
-                            <span>Iphone</span>
+                        <div className="filter-brand">
+                            <div className="filter-title">Thương hiệu</div>
+                            {listBrand.map((brand, i) => {
+                                return (
+                                    <div className="filter" key={i}>
+                                        <input
+                                            className="form-check-input"
+                                            type="checkbox"
+                                            checked={newBrand.current.includes(brand.value)}
+                                            value={brand.value}
+                                            onChange={(e) => {
+                                                filterBrand(e.target.value);
+                                            }}
+                                        />
+                                        <span>{brand.label}</span>
+                                    </div>
+                                );
+                            })}
                         </div>
 
-                        <div className="filter">
-                            <input
-                                className="form-check-input"
-                                type="checkbox"
-                                checked={newBrand.current.includes('laptop')}
-                                value="laptop"
-                                onChange={(e) => {
-                                    filterBrand(e.target.value);
+                        <div className="filter-remove">
+                            <Button
+                                className="btn btn-primary w-100"
+                                onClick={() => {
+                                    removeFilter();
                                 }}
-                            />
-                            <span>Laptop</span>
+                            >
+                                Xóa bộ lọc
+                            </Button>
                         </div>
                     </div>
-                    <div></div>
-                    <div className="filter-remove">
-                        <Button
-                            className="btn btn-primary w-100"
-                            onClick={() => {
-                                removeFilter();
-                            }}
-                        >
-                            Xóa bộ lọc
-                        </Button>
-                    </div>
-                </div>
+                )}
                 <div className="col-lg-10">
                     <div className="row row-cols-xl-5 custom-row">
                         {dataRender.map((data, index) => (
@@ -232,6 +263,7 @@ function Search() {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }
