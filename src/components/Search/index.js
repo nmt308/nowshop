@@ -21,6 +21,7 @@ function Search() {
 
     const inputRef = useRef();
     const debounce = useDebounce(value, 500);
+    const navigate = useNavigate();
 
     const handleTooltip = () => {
         setToolTip(false);
@@ -40,7 +41,7 @@ function Search() {
         } else {
             setValue('');
             localStorage.setItem('search', value);
-            window.location.href = '/search';
+            window.location.href = 'https://nowshop.netlify.app/search';
         }
     };
 
