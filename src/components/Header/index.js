@@ -161,6 +161,7 @@ function Header() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [openMenu]);
+
     return (
         <nav className={cx('navbar navbar-expand-lg navbar-light bg-light', 'navbar')}>
             <div className="container">
