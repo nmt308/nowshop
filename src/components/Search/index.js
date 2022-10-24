@@ -4,7 +4,7 @@ import SearchItem from '../SearchItem';
 import { useDebounce } from '../../CustomHook';
 //React
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 //Firebase
 import { collection, getDocs } from 'firebase/firestore';
 import { fs } from '../../Config/Config';
@@ -41,7 +41,7 @@ function Search() {
         } else {
             setValue('');
             localStorage.setItem('search', value);
-            window.location.href = 'https://nowshop.netlify.app/search';
+            window.location.href = '/search';
         }
     };
 
