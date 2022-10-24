@@ -10,6 +10,7 @@ import { CartQuantity } from '../../layouts/DefaultLayout';
 // React
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // Firebase
 import { auth, fs } from '../../Config/Config';
 import { collection, getDocs } from 'firebase/firestore';
@@ -60,18 +61,6 @@ function Header() {
     }, []);
 
     const user = localStorage.getItem('user');
-
-    useEffect(() => {
-        if (!user) {
-            return;
-        }
-        if (openMenu) {
-            menuRef.current.style.height = menuRef.current.scrollHeight + 4 + 'px';
-        } else {
-            menuRef.current.style.height = 0;
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [openMenu]);
 
     useEffect(() => {
         auth.onAuthStateChanged(async (user) => {
@@ -158,6 +147,20 @@ function Header() {
     const isTablet = viewPort.width > 739 && viewPort.width <= 992;
     const isPc = viewPort.width > 992;
 
+    useEffect(() => {
+        if (!user) {
+            return;
+        }
+        //Check mobile hoặc tablet mới set height cho menu
+        if (isMobile || isTablet) {
+            if (openMenu) {
+                menuRef.current.style.height = menuRef.current.scrollHeight + 4 + 'px';
+            } else {
+                menuRef.current.style.height = 0;
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [openMenu]);
     return (
         <nav className={cx('navbar navbar-expand-lg navbar-light bg-light', 'navbar')}>
             <div className="container">
@@ -201,8 +204,8 @@ function Header() {
                                 hideOnClick="false"
                                 render={(attrs) => (
                                     <div className={cx('menu')}>
-                                        <a href="/login">Đăng nhập</a>
-                                        <a href="/register">Đăng kí</a>
+                                        <Link to="/login">Đăng nhập</Link>
+                                        <Link to="/register">Đăng kí</Link>
                                     </div>
                                 )}
                             >
