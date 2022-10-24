@@ -231,7 +231,7 @@ function Header() {
                                 active: openMenu,
                             })}
                         >
-                            <MenuItem content={user} placement="bottom" isPc>
+                            <MenuItem content={user} placement="bottom" isPc={isPc}>
                                 <div className={cx('action-item')}>
                                     <Button className={cx('btn', 'custom-btn')}>
                                         <div ref={userIcon1} className={cx('userIcon1')} />
@@ -240,7 +240,7 @@ function Header() {
                                     <span>{user}</span>
                                 </div>
                             </MenuItem>
-                            <MenuItem content="Đơn hàng" placement="bottom" isPc>
+                            <MenuItem content="Đơn hàng" placement="bottom" isPc={isPc}>
                                 <div
                                     className={cx('action-item')}
                                     onClick={() => {
@@ -254,7 +254,7 @@ function Header() {
                                     <span>Đơn hàng</span>
                                 </div>
                             </MenuItem>
-                            <MenuItem content="Giỏ hàng" placement="bottom" isPc>
+                            <MenuItem content="Giỏ hàng" placement="bottom" isPc={isPc}>
                                 <div
                                     className={cx('action-item')}
                                     onClick={() => {
@@ -270,7 +270,7 @@ function Header() {
                                 </div>
                             </MenuItem>
 
-                            <MenuItem content="Đăng xuất" placement="bottom" isPc>
+                            <MenuItem content="Đăng xuất" placement="bottom" isPc={isPc}>
                                 <div className={cx('action-item')} onClick={SignOut}>
                                     <Button className={cx('btn', 'custom-btn')}>
                                         <div ref={logoutIcon1} className={cx('logoutIcon1')} />
