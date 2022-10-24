@@ -39,6 +39,11 @@ function Header() {
 
     const navigate = useNavigate();
 
+    const viewPort = useViewport();
+    const isMobile = viewPort.width <= 739;
+    const isTablet = viewPort.width > 739 && viewPort.width <= 992;
+    const isPc = viewPort.width > 992;
+
     const SignOut = () => {
         localStorage.removeItem('user');
         setTimeout(() => {
@@ -140,12 +145,7 @@ function Header() {
         return () => {
             lottie.destroy();
         };
-    }, [user]);
-
-    const viewPort = useViewport();
-    const isMobile = viewPort.width <= 739;
-    const isTablet = viewPort.width > 739 && viewPort.width <= 992;
-    const isPc = viewPort.width > 992;
+    }, [user, isMobile, isPc, isTablet]);
 
     useEffect(() => {
         if (!user) {
